@@ -289,7 +289,7 @@ function init() {
     // 2. Build Grid
     const stationsWithImages = radioStations.map(station => ({
         ...station,
-        image: `radio-images/${station.name}.webp`
+        image: `radio-images/${station.imageFilename || station.name}.webp`
     }));
 
     // Setup Stop Click Listener

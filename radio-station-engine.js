@@ -204,6 +204,7 @@ const radioStations = [
     },
     {
         name: "FIP autour de l’électro",
+        imageFilename: "fip-electro",
         url: "http://direct.fipradio.fr/live/fip-webradio8.mp3",
         city: "Paris",
         timezone: "Europe/Paris",
