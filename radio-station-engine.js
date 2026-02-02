@@ -1,25 +1,5 @@
 const radioStations = [
-    {
-        name: "KBYU-FM Classical 89",
-        url: "https://radio.byub.org/classical89/classical89_mp3",
-        city: "Provo/Salt Lake City",
-        timezone: "America/Denver",
-        genres: "Classical, Opera, Choral, Chamber Music, Symphonic"
-    },
-    {
-        name: "KUER-FM",
-        url: "https://kuer.streamguys1.com/high_icy",
-        city: "Salt Lake City",
-        timezone: "America/Denver",
-        genres: "NPR News, Jazz (Nightly), Indie Rock (HD2), Public Radio, Storytelling"
-    },
-    {
-        name: "KGRA",
-        url: "https://www.radioking.com/play/kgra-digital-broadcasting/508184",
-        city: "Independence, Missouri",
-        timezone: "America/Chicago",
-        genres: "Paranormal, UFOlogy, Alternative Talk, Conspiracies, Fringe Science"
-    },
+    // ========== NORTH AMERICA - EAST ==========
     {
         name: "WQXR-FM",
         url: "https://stream.wqxr.org/wqxr",
@@ -37,10 +17,61 @@ const radioStations = [
     {
         name: "WBGO Jazz 88",
         url: "https://ais-sa8.cdnstream1.com/3629_128.mp3",
-        city: "Newark/New York",
+        city: "Newark",
         timezone: "America/New_York",
         genres: "Jazz, Blues, Soul, R&B, Bebop, Latin Jazz"
     },
+    {
+        name: "New Sounds - WQXR-HD2",
+        url: "https://q2stream.wqxr.org/q2",
+        city: "New York",
+        timezone: "America/New_York",
+        genres: "New Music, Contemporary Classical, World, Electronic"
+    },
+    {
+        name: "WNYC-FM",
+        url: "https://fm939.wnyc.org/wnycfm",
+        city: "New York",
+        timezone: "America/New_York",
+        genres: "Public Radio, News, Talk, Cultural Programming"
+    },
+    {
+        name: "93.9 HD2 | WQXR-FM",
+        url: "https://stream.wqxr.org/wqxr.mp3",
+        city: "New York",
+        timezone: "America/New_York",
+        genres: "Classical, Opera, Symphonic"
+    },
+    {
+        name: "WFMU",
+        url: "https://stream0.wfmu.org/freeform-high.aac",
+        city: "Jersey City",
+        timezone: "America/New_York",
+        genres: "Freeform, Experimental, Garage Rock, Noise, Outsider Music, Eclectic"
+    },
+    {
+        name: "WFMU's Sheena's Jungle Room",
+        url: "https://stream0.wfmu.org/sheena", 
+        city: "Jersey City",
+        timezone: "America/New_York",
+        genres: "Exotica, Lounge, Surf, Garage, Psych"
+    },
+    {
+        name: "WXYC",
+        url: "https://audio-mp3.ibiblio.org/wxyc.mp3", 
+        city: "Chapel Hill",
+        timezone: "America/New_York",
+        genres: "Freeform, Indie Rock, Hip Hop, Electronic, Cyclic"
+    },
+    {
+        name: "The Lot Radio",
+        url: "https://thelot.out.airtime.pro/thelot_a",
+        city: "Brooklyn",
+        timezone: "America/New_York",
+        genres: "Eclectic, Underground, Electronic, Disco, House, Community"
+    },
+    
+    // ========== NORTH AMERICA - SOUTH ==========
     {
         name: "WWOZ",
         url: "https://wwoz-sc.streamguys1.com/wwoz-hi.mp3",
@@ -48,76 +79,121 @@ const radioStations = [
         timezone: "America/Chicago",
         genres: "New Orleans Jazz, Zydeco, Cajun, Swamp Pop, Blues, R&B, Funk, Soul"
     },
+    
+    // ========== NORTH AMERICA - MIDWEST ==========
     {
-        name: "TSF Jazz",
-        url: "https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Jazz, Swing, Bossa Nova, Soul, Blues"
+        name: "WFMT Classical Music",
+        url: "https://wfmt-live.streamguys1.com/wfmt128-mp3",
+        city: "Chicago",
+        timezone: "America/Chicago",
+        genres: "Classical, Folk, Opera, Live Studio Performances"
     },
     {
-        name: "BBC Radio 3",
-        url: "https://as-hls-ww-live.akamaized.net/pool_23461179/live/ww/bbc_radio_three/bbc_radio_three.isml/bbc_radio_three-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_three.mpd",
-        city: "London",
-        timezone: "Europe/London",
-        genres: "Classical, Contemporary Classical, Opera, Jazz, World Music, Drama, Arts"
+        name: "WBEZ",
+        url: "https://stream.wbez.org/wbez128.mp3",
+        city: "Chicago",
+        timezone: "America/Chicago",
+        genres: "NPR News, Talk, Storytelling"
     },
     {
-        name: "BBC Radio 6 Music",
-        url: "https://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_6music.mpd",
-        city: "London",
-        timezone: "Europe/London",
-        genres: "Alternative, Indie, Funk, Soul, Dance, Reggae, Experimental"
+        name: "KGRA",
+        url: "https://www.radioking.com/play/kgra-digital-broadcasting/508184",
+        city: "Independence",
+        timezone: "America/Chicago",
+        genres: "Paranormal, UFOlogy, Alternative Talk, Conspiracies, Fringe Science"
+    },
+    
+    // ========== NORTH AMERICA - MOUNTAIN ==========
+    {
+        name: "KBYU-FM Classical 89",
+        url: "https://radio.byub.org/classical89/classical89_mp3",
+        city: "Salt Lake City",
+        timezone: "America/Denver",
+        genres: "Classical, Opera, Choral, Chamber Music, Symphonic"
     },
     {
-        name: "BBC Radio 2",
-        url: "https://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_two.mpd",
-        city: "London",
-        timezone: "Europe/London",
-        genres: "Adult Contemporary, Pop, Soul, Country, Folk, Soft Rock"
+        name: "KUER-FM",
+        url: "https://kuer.streamguys1.com/high_icy",
+        city: "Salt Lake City",
+        timezone: "America/Denver",
+        genres: "NPR News, Jazz (Nightly), Indie Rock (HD2), Public Radio, Storytelling"
     },
     {
-        name: "BR-Klassik",
-        url: "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/high",
-        city: "Munich",
-        timezone: "Europe/Berlin",
-        genres: "Classical, Film Scores, Jazz (Late Night), Contemporary Classical"
+        name: "KUVO Jazz",
+        url: "https://kuvo-ice.streamguys1.com/kuvo-mp3-128",
+        city: "Denver",
+        timezone: "America/Denver",
+        genres: "Jazz, Blues, Latin Jazz, Soul, Public Radio"
+    },
+    
+    // ========== NORTH AMERICA - WEST COAST ==========
+    {
+        name: "KCSM Jazz 91.1",
+        url: "https://ice7.securenetsystems.net/KCSM2",
+        city: "San Mateo",
+        timezone: "America/Los_Angeles",
+        genres: "Jazz, Bebop, Big Band, Latin Jazz, Blues"
     },
     {
-        name: "Radio Swiss Jazz",
-        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
-        city: "Bern",
-        timezone: "Europe/Zurich",
-        genres: "Jazz, Soul, Blues, Standards, Swing, Bebop"
+        name: "dublab",
+        url: "https://dublab.out.airtime.pro/dublab_a",
+        city: "Los Angeles",
+        timezone: "America/Los_Angeles",
+        genres: "Future Roots, Ambient, Experimental, Psych, Electronic, Indie"
     },
     {
-        name: "Radio Swiss Pop",
-        url: "https://stream.srg-ssr.ch/m/rsp/mp3_128",
-        city: "Bern",
-        timezone: "Europe/Zurich",
-        genres: "Pop, Soft Rock, Adult Contemporary, Oldies"
+        name: "KFJC",
+        url: "https://netcast.kfjc.org/", 
+        city: "Los Altos Hills",
+        timezone: "America/Los_Angeles",
+        genres: "Psychedelic, Surf, Experimental, Noise, Lo-Fi, Drone, Metal"
+    },
+    
+    // ========== CANADA ==========
+    {
+        name: "CBC Music Toronto",
+        url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR2_TOR@383180/master.m3u8",
+        city: "Toronto",
+        timezone: "America/Toronto",
+        genres: "Eclectic, Canadian, Indie, Jazz, Classical, Folk, World"
     },
     {
-        name: "Radio Swiss Classic",
-        url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128",
-        city: "Bern",
-        timezone: "Europe/Zurich",
-        genres: "Classical, Baroque, Romantic, Chamber Music"
+        name: "CBC Radio One Toronto",
+        url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR1_TOR@118420/master.m3u8",
+        city: "Toronto",
+        timezone: "America/Toronto",
+        genres: "Public Radio, News, Talk, Arts, Culture"
     },
     {
-        name: "Antena 2",
-        url: "https://radiocast.rtp.pt/antena280a.mp3",
-        city: "Lisbon",
-        timezone: "Europe/Lisbon",
-        genres: "Classical, Culture, Early Music, Opera, Avant-Garde"
+        name: "CKUA Radio",
+        url: "https://ckua.streamon.fm/listen-hls.m3u8",
+        city: "Edmonton",
+        timezone: "America/Edmonton",
+        genres: "Eclectic, Jazz, Blues, Folk, Classical, World, Roots"
     },
     {
-        name: "Antena 2 Jazz In",
-        url: "https://radiocast.rtp.pt/antena2jazzin80a.mp3",
-        city: "Lisbon",
-        timezone: "Europe/Lisbon",
-        genres: "Jazz, Smooth Jazz, Vocal Jazz, Bossa Nova"
+        name: "CJSW Calgary",
+        url: "https://cjsw.leanstream.co/CJSWFM-MP3",
+        city: "Calgary",
+        timezone: "America/Edmonton",
+        genres: "Freeform, Indie, Punk, Electronic, World, Experimental"
     },
+    {
+        name: "CITR Vancouver",
+        url: "https://live.citr.ca/live.mp3",
+        city: "Vancouver",
+        timezone: "America/Vancouver",
+        genres: "Freeform, Indie, Electronic, Punk, Talk, Community"
+    },
+    {
+        name: "Espace Musique Montréal",
+        url: "https://rcavliveaudio.akamaized.net/hls/live/2006999/M-7QMTL0_MTL/master.m3u8",
+        city: "Montréal",
+        timezone: "America/Toronto",
+        genres: "French Canadian, Classical, Jazz, World, Chanson"
+    },
+    
+    // ========== BRAZIL ==========
     {
         name: "Rádio MEC FM",
         url: "https://radiomecfm-stream.ebc.com.br/ebc/radiomecfm/playlist.m3u8",
@@ -126,11 +202,18 @@ const radioStations = [
         genres: "Classical, Choro, Instrumental Brazilian, Bossa Nova, Chamber Music"
     },
     {
-        name: "TMC Recife",
-        url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RT_REC.mp3",
-        city: "Recife",
-        timezone: "America/Recife",
-        genres: "News, Sports, Debates, Interviews"
+        name: "Rádio USP FM",
+        url: "https://stream.radio.usp.br:8443/uspfm.mp3",
+        city: "São Paulo",
+        timezone: "America/Sao_Paulo",
+        genres: "Eclectic, Brazilian, Jazz, Rock, World, MPB, University"
+    },
+    {
+        name: "Rádio Cultura FM São Paulo",
+        url: "https://stream-ice.culturafm.com.br:8443/culturafm.aac",
+        city: "São Paulo",
+        timezone: "America/Sao_Paulo",
+        genres: "Classical, Opera, Chamber Music, Symphonic"
     },
     {
         name: "Nova Brasil FM Recife",
@@ -140,150 +223,34 @@ const radioStations = [
         genres: "MPB (Música Popular Brasileira), Brazilian Pop, Samba, Adult Contemporary"
     },
     {
-        name: "WFMT Classical Music",
-        url: "https://wfmt-live.streamguys1.com/wfmt128-mp3",
-        city: "Chicago",
-        timezone: "America/Chicago",
-        genres: "Classical, Folk, Opera, Live Studio Performances"
-    },
-    //Cannot find a reliable stream:
-    /*
-    {
-        name: "Rádio Cultura Brasil",
-        url: "https://evpp.mm.uol.com.br/cultura2/cultura2.sdp/playlist.m3u8",//Was "https://stm8.painelvox.com:8052/;",
+        name: "Rádio Eldorado São Paulo",
+        url: "https://ice.fabricahost.com.br/radioeldoradofm",
         city: "São Paulo",
         timezone: "America/Sao_Paulo",
-        genres: "MPB, Brazilian Pop, Samba, Instrumental"
+        genres: "News, Classical, Jazz, MPB, Culture"
     },
-    */
+
+    // ========== EUROPE - UK ==========
     {
-        name: "FIP POP",
-        url: "https://icecast.radiofrance.fr/fippop-midfi.mp3",
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Pop, Rock, Chanson"
-    },
-    {
-        name: "FIP Hip Hop",
-        url: "https://icecast.radiofrance.fr/fiphiphop-midfi.mp3",
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Hip Hop, Rap, R&B"
-    },
-    {
-        name: "FIP autour du jazz",
-        url: "https://direct.fipradio.fr/live/fip-webradio2.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Jazz"
-    },
-    {
-        name: "FIP autour du monde",
-        url: "https://direct.fipradio.fr/live/fip-webradio4.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "World Music"
-    },
-    {
-        name: "FIP autour du groove",
-        url: "https://direct.fipradio.fr/live/fip-webradio3.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Funk, Soul, Groove, R&B"
-    },
-    {
-        name: "FIP Sacré français !",
-        url: "https://icecast.radiofrance.fr/fipsacrefrancais-midfi.mp3",
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "French Chanson, French Pop"
-    },
-    {
-        name: "Tout nouveau, tout FIP",
-        url: "https://direct.fipradio.fr/live/fip-webradio5.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "New Releases, Eclectic"
-    },
-    {
-        name: "FIP autour de l’électro",
-        imageFilename: "fip-electro",
-        url: "https://direct.fipradio.fr/live/fip-webradio8.mp3", 
-        city: "Paris",
-        timezone: "Europe/Paris",
-        genres: "Electronic, Electro"
-    },
-    {
-        name: "KUVO Jazz",
-        url: "https://kuvo-ice.streamguys1.com/kuvo-mp3-128",
-        city: "Denver",
-        timezone: "America/Denver",
-        genres: "Jazz, Blues, Latin Jazz, Soul, Public Radio"
-    },
-    {
-        name: "KCSM Jazz 91.1",
-        url: "https://ice7.securenetsystems.net/KCSM2",
-        city: "San Mateo, CA",
-        timezone: "America/Los_Angeles",
-        genres: "Jazz, Bebop, Big Band, Latin Jazz, Blues"
-    },
-    //Cannot find a reliable stream:
-    /*
-    {
-        name: "RNZ Concert",
-        url: "https://radionz-ice.streamguys.com/concert.mp3", //Was "https://radionz.co.nz/Concert_aac128", 
-        city: "Wellington",
-        timezone: "Pacific/Auckland",
-        genres: "Classical, Contemporary Classical, Opera, Jazz, Arts News"
-    },
-    */
-    {
-        name: "WFMU",
-        url: "https://stream0.wfmu.org/freeform-high.aac",//Was "https://wfmu.org/wfmu.pls", 
-        city: "Jersey City",
-        timezone: "America/New_York",
-        genres: "Freeform, Experimental, Garage Rock, Noise, Outsider Music, Eclectic"
-    },
-    //Cannot find a reliable stream:
-    /*
-    {
-        name: "WFMU's Ubu",
-        url: "https://stream0.wfmu.org/wfmu_ubu.aac", //was something else
-        city: "Jersey City",
-        timezone: "America/New_York",
-        genres: "Avant-Garde, Experimental, Sound Art, Noise"
-    },
-    */
-    {
-        name: "WFMU's Sheena's Jungle Room",
-        url: "https://stream0.wfmu.org/sheena", 
-        city: "Jersey City",
-        timezone: "America/New_York",
-        genres: "Exotica, Lounge, Surf, Garage, Psych"
-    },
-    //Cannot find a reliable stream:
-    /*
-    {
-        name: "WFMU's Rock'n'Soul Radio",
-        url: "https://stream0.wfmu.org/rocknsoul-128k.mp3", //Was "https://relay2.wfmu.org:80/rocknsoul-live.mp3", 
-        city: "Jersey City",
-        timezone: "America/New_York",
-        genres: "Rock 'n' Soul, Garage, R&B, Oldies"
-    },
-    */
-    {
-        name: "NTS Sweat",
-        url: "https://stream-mixtape-geo.ntslive.net/mixtape24",
+        name: "BBC Radio 3",
+        url: "https://as-hls-ww-live.akamaized.net/pool_23461179/live/ww/bbc_radio_three/bbc_radio_three.isml/bbc_radio_three-audio%3d96000.norewind.m3u8",
         city: "London",
         timezone: "Europe/London",
-        genres: "Club, Baile Funk, Reggaeton, Dance"
+        genres: "Classical, Contemporary Classical, Opera, Jazz, World Music, Drama, Arts"
     },
     {
-        name: "NTS Low Key",
-        url: "https://stream-mixtape-geo.ntslive.net/mixtape2",
+        name: "BBC Radio 6 Music",
+        url: "https://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d96000.norewind.m3u8",
         city: "London",
         timezone: "Europe/London",
-        genres: "Lo-Fi Hip Hop, R&B, Ambient"
+        genres: "Alternative, Indie, Funk, Soul, Dance, Reggae, Experimental"
+    },
+    {
+        name: "BBC Radio 2",
+        url: "https://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d96000.norewind.m3u8",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Adult Contemporary, Pop, Soul, Country, Folk, Soft Rock"
     },
     {
         name: "NTS Radio 1",
@@ -298,6 +265,20 @@ const radioStations = [
         city: "London",
         timezone: "Europe/London",
         genres: "Eclectic, Underground"
+    },
+    {
+        name: "NTS Sweat",
+        url: "https://stream-mixtape-geo.ntslive.net/mixtape24",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Club, Baile Funk, Reggaeton, Dance"
+    },
+    {
+        name: "NTS Low Key",
+        url: "https://stream-mixtape-geo.ntslive.net/mixtape2",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Lo-Fi Hip Hop, R&B, Ambient"
     },
     {
         name: "NTS Poolside",
@@ -370,56 +351,11 @@ const radioStations = [
         genres: "Field Recordings, Ambient"
     },
     {
-        name: "dublab",
-        url: "https://dublab.out.airtime.pro/dublab_a",
-        city: "Los Angeles",
-        timezone: "America/Los_Angeles",
-        genres: "Future Roots, Ambient, Experimental, Psych, Electronic, Indie"
-    },
-    {
-        name: "dublab DE",
-        url: "https://dublabde.out.airtime.pro:8000/dublabde_a", 
-        city: "Cologne",
-        timezone: "Europe/Berlin",
-        genres: "Electronic, Ambient, Experimental, Jazz, Krautrock"
-    },
-    {
         name: "Resonance FM",
         url: "https://stream.resonance.fm/resonance",
         city: "London",
         timezone: "Europe/London",
         genres: "Sound Art, Experimental, Community, Avant-Garde, Spoken Word, Field Recordings"
-    },
-    {
-        name: "KFJC",
-        url: "https://netcast.kfjc.org/", 
-        city: "Los Altos Hills",
-        timezone: "America/Los_Angeles",
-        genres: "Psychedelic, Surf, Experimental, Noise, Lo-Fi, Drone, Metal"
-    },
-    //Cannot find a reliable stream:
-    /*
-    {
-        name: "WZBC",
-        url: "https://amber.streamguys.com:4860", 
-        city: "Newton, MA",
-        timezone: "America/New_York",
-        genres: "No Commercial Potential, Modern Rock, Experimental, Noise, Industrial"
-    },
-    */
-    {
-        name: "WXYC",
-        url: "https://audio-mp3.ibiblio.org/wxyc.mp3", 
-        city: "Chapel Hill",
-        timezone: "America/New_York",
-        genres: "Freeform, Indie Rock, Hip Hop, Electronic, Cyclic"
-    },
-    {
-        name: "Kiosk Radio",
-        url: "https://kioskradio.stream.laut.fm/kioskradio",
-        city: "Brussels",
-        timezone: "Europe/Brussels",
-        genres: "Eclectic, Electronic, DJ Sets, Community, World, House, Disco"
     },
     {
         name: "Noods Radio",
@@ -429,6 +365,116 @@ const radioStations = [
         genres: "Underground, Electronic, Post-Punk, Industrial, Techno, Ambient"
     },
     {
+        name: "Soho Radio",
+        url: "https://s2.radio.co/s2c3cc784b/listen",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Eclectic, Electronic, Indie, Soul, Jazz, Community"
+    },
+    {
+        name: "Worldwide FM",
+        url: "https://worldwidefm.out.airtime.pro/worldwidefm_a",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Global, Jazz, Soul, Electronic, World"
+    },
+    {
+        name: "Balamii",
+        url: "https://balamii.out.airtime.pro/balamii_a",
+        city: "London",
+        timezone: "Europe/London",
+        genres: "Grime, UK Bass, Electronic, Club"
+    },
+    
+    // ========== EUROPE - FRANCE ==========
+    {
+        name: "TSF Jazz",
+        url: "https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Jazz, Swing, Bossa Nova, Soul, Blues"
+    },
+    {
+        name: "FIP",
+        url: "https://icecast.radiofrance.fr/fip-hifi.aac",
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Eclectic, World, Jazz, Rock, Electronic, Soul"
+    },
+    {
+        name: "FIP POP",
+        url: "https://icecast.radiofrance.fr/fippop-midfi.mp3",
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Pop, Rock, Chanson"
+    },
+    {
+        name: "FIP Hip Hop",
+        url: "https://icecast.radiofrance.fr/fiphiphop-midfi.mp3",
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Hip Hop, Rap, R&B"
+    },
+    {
+        name: "FIP autour du jazz",
+        url: "https://direct.fipradio.fr/live/fip-webradio2.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Jazz"
+    },
+    {
+        name: "FIP autour du monde",
+        url: "https://direct.fipradio.fr/live/fip-webradio4.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "World Music"
+    },
+    {
+        name: "FIP autour du groove",
+        url: "https://direct.fipradio.fr/live/fip-webradio3.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Funk, Soul, Groove, R&B"
+    },
+    {
+        name: "FIP Sacré français !",
+        url: "https://icecast.radiofrance.fr/fipsacrefrancais-midfi.mp3",
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "French Chanson, French Pop"
+    },
+    {
+        name: "Tout nouveau, tout FIP",
+        url: "https://direct.fipradio.fr/live/fip-webradio5.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "New Releases, Eclectic"
+    },
+    {
+        name: "FIP autour de l'électro",
+        imageFilename: "fip-electro",
+        url: "https://direct.fipradio.fr/live/fip-webradio8.mp3", 
+        city: "Paris",
+        timezone: "Europe/Paris",
+        genres: "Electronic, Electro"
+    },
+    
+    // ========== EUROPE - GERMANY ==========
+    {
+        name: "BR-Klassik",
+        url: "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/high",
+        city: "Munich",
+        timezone: "Europe/Berlin",
+        genres: "Classical, Film Scores, Jazz (Late Night), Contemporary Classical"
+    },
+    {
+        name: "dublab DE",
+        url: "https://dublabde.out.airtime.pro:8000/dublabde_a", 
+        city: "Cologne",
+        timezone: "Europe/Berlin",
+        genres: "Electronic, Ambient, Experimental, Jazz, Krautrock"
+    },
+    {
         name: "Refuge Worldwide",
         url: "https://streaming.radio.co/s3699c5e49/listen",
         city: "Berlin",
@@ -436,41 +482,83 @@ const radioStations = [
         genres: "Community, Electronic, Social Issues, Talk, Global Club, Ambient"
     },
     {
-        name: "WBEZ",
-        url: "https://stream.wbez.org/wbez128.mp3",
-        city: "Chicago",
-        timezone: "America/Chicago",
-        genres: "NPR News, Talk, Storytelling"
+        name: "Cashmere Radio",
+        url: "https://cashmereradio.out.airtime.pro/cashmereradio_a",
+        city: "Berlin",
+        timezone: "Europe/Berlin",
+        genres: "Experimental, Ambient, Electronic, Sound Art"
+    },
+    
+    // ========== EUROPE - NETHERLANDS ==========
+    {
+        name: "Red Light Radio",
+        url: "https://redlightradio.out.airtime.pro:8443/redlightradio_a",
+        city: "Amsterdam",
+        timezone: "Europe/Amsterdam",
+        genres: "Underground, Electronic, Disco, House, Experimental"
     },
     {
-        name: "New Sounds - WQXR-HD2",
-        url: "https://q2stream.wqxr.org/q2",
-        city: "New York",
-        timezone: "America/New_York",
-        genres: "New Music, Contemporary Classical, World, Electronic"
+        name: "n10.as",
+        url: "https://n10as.out.airtime.pro/n10as_a",
+        city: "Rotterdam",
+        timezone: "Europe/Amsterdam",
+        genres: "Experimental, Electronic, Ambient, Sound Art"
+    },
+    
+    // ========== EUROPE - SWITZERLAND ==========
+    {
+        name: "Radio Swiss Jazz",
+        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
+        city: "Bern",
+        timezone: "Europe/Zurich",
+        genres: "Jazz, Soul, Blues, Standards, Swing, Bebop"
     },
     {
-        name: "WNYC-FM",
-        url: "https://fm939.wnyc.org/wnycfm",
-        city: "New York",
-        timezone: "America/New_York",
-        genres: "Public Radio, News, Talk, Cultural Programming"
+        name: "Radio Swiss Pop",
+        url: "https://stream.srg-ssr.ch/m/rsp/mp3_128",
+        city: "Bern",
+        timezone: "Europe/Zurich",
+        genres: "Pop, Soft Rock, Adult Contemporary, Oldies"
     },
     {
-        name: "93.9 HD2 | WQXR-FM - WNYC-HD2 (Classical)",
-        url: "https://stream.wqxr.org/wqxr.mp3", //Was "https://stream.wqxr.org/wqxr",
-        city: "New York",
-        timezone: "America/New_York",
-        genres: "Classical, Opera, Symphonic"
+        name: "Radio Swiss Classic",
+        url: "https://stream.srg-ssr.ch/m/rsc_de/mp3_128",
+        city: "Bern",
+        timezone: "Europe/Zurich",
+        genres: "Classical, Baroque, Romantic, Chamber Music"
     },
-    //Cannot find a reliable stream:
-    /*
+    
+    // ========== EUROPE - PORTUGAL ==========
     {
-        name: "WNYC's New Standards",
-        url: "https://tjc.wnyc.org/js-stream",
-        city: "New York",
-        timezone: "America/New_York",
-        genres: "American Songbook, Jazz, Vocal Jazz, Pop Standards"
+        name: "Antena 2",
+        url: "https://radiocast.rtp.pt/antena280a.mp3",
+        city: "Lisbon",
+        timezone: "Europe/Lisbon",
+        genres: "Classical, Culture, Early Music, Opera, Avant-Garde"
     },
-    */
+    {
+        name: "Antena 2 Jazz In",
+        url: "https://radiocast.rtp.pt/antena2jazzin80a.mp3",
+        city: "Lisbon",
+        timezone: "Europe/Lisbon",
+        genres: "Jazz, Smooth Jazz, Vocal Jazz, Bossa Nova"
+    },
+    
+    // ========== EUROPE - BELGIUM ==========
+    {
+        name: "Kiosk Radio",
+        url: "https://kioskradio.stream.laut.fm/kioskradio",
+        city: "Brussels",
+        timezone: "Europe/Brussels",
+        genres: "Eclectic, Electronic, DJ Sets, Community, World, House, Disco"
+    },
+    
+    // ========== MIDDLE EAST ==========
+    {
+        name: "Radio Alhara",
+        url: "https://n0c.radiojar.com/4xqhqqjtdzzuv?rj-ttl=5",
+        city: "Bethlehem",
+        timezone: "Asia/Jerusalem",
+        genres: "Palestinian, Arabic, Electronic, Talk, Community"
+    },
 ];

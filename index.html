@@ -28,13 +28,38 @@
                 <p id="current-genres"></p>
             </div>
         </div>
+
+        <!-- Identify Track Button (Shazam-like) -->
+        <button id="identify-btn" class="identify-btn" style="display: none;">
+            <span class="identify-icon">🎵</span>
+            <span class="identify-text">What's Playing?</span>
+        </button>
+        <p id="identify-result" class="identify-result"></p>
+
+        <!-- Collapsible Filter Controls (inside player area) -->
+        <div class="filter-toggles">
+            <button id="toggle-genres" class="filter-toggle-btn">Show Genres ▼</button>
+            <button id="toggle-timezones" class="filter-toggle-btn">Show Timezones ▼</button>
+            <button id="clear-btn" class="clear-btn" style="display: none;">Clear Filters</button>
+        </div>
+
+        <!-- Genre Filter (collapsible) -->
+        <div id="genre-filter" class="filter-panel" style="display: none;">
+            <div id="genre-checkboxes" class="filter-list"></div>
+        </div>
+
+        <!-- Timezone Filter (collapsible) -->
+        <div id="timezone-filter" class="filter-panel" style="display: none;">
+            <div id="timezone-checkboxes" class="filter-list"></div>
+        </div>
     </div>
 
-    <div class="filter-container">
-        <span class="filter-label">ONLY SHOW:</span>
-        <button id="clear-btn" style="display: none;">(Clear)</button>
-        <div id="genre-checkboxes" class="genre-list">
-        </div>
+    <!-- Sort Controls -->
+    <div class="sort-container">
+        <span class="sort-label">Sort by:</span>
+        <button id="sort-alpha" class="sort-btn active">A-Z</button>
+        <button id="sort-city" class="sort-btn">City A-Z</button>
+        <button id="sort-geo" class="sort-btn">Geographic (NYC East)</button>
     </div>
 
     <div id="station-grid" class="station-grid">
@@ -48,6 +73,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- IcecastMetadataPlayer for proper metadata extraction -->
+    <script src="https://cdn.jsdelivr.net/npm/icecast-metadata-player@1.17.13/build/icecast-metadata-player-1.17.13.main.min.js"></script>
 
     <script src="radio-station-engine.js"></script>
     <script src="script.js"></script>
