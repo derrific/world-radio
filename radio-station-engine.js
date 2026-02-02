@@ -29,7 +29,7 @@ const radioStations = [
     },
     {
         name: "WKCR-FM",
-        url: "http://wkcr.streamguys1.com/live.m3u",
+        url: "https://wkcr.streamguys1.com/live.m3u", 
         city: "New York",
         timezone: "America/New_York",
         genres: "Free Jazz, Avant-Garde, Classical, New Music, American Roots, Salsa, Experimental"
@@ -50,7 +50,7 @@ const radioStations = [
     },
     {
         name: "TSF Jazz",
-        url: "http://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3",
+        url: "https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "Jazz, Swing, Bossa Nova, Soul, Blues"
@@ -169,21 +169,21 @@ const radioStations = [
     },
     {
         name: "FIP autour du jazz",
-        url: "http://direct.fipradio.fr/live/fip-webradio2.mp3",
+        url: "https://direct.fipradio.fr/live/fip-webradio2.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "Jazz"
     },
     {
         name: "FIP autour du monde",
-        url: "http://direct.fipradio.fr/live/fip-webradio4.mp3",
+        url: "https://direct.fipradio.fr/live/fip-webradio4.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "World Music"
     },
     {
         name: "FIP autour du groove",
-        url: "http://direct.fipradio.fr/live/fip-webradio3.mp3",
+        url: "https://direct.fipradio.fr/live/fip-webradio3.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "Funk, Soul, Groove, R&B"
@@ -197,7 +197,7 @@ const radioStations = [
     },
     {
         name: "Tout nouveau, tout FIP",
-        url: "http://direct.fipradio.fr/live/fip-webradio5.mp3",
+        url: "https://direct.fipradio.fr/live/fip-webradio5.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "New Releases, Eclectic"
@@ -205,7 +205,7 @@ const radioStations = [
     {
         name: "FIP autour de l’électro",
         imageFilename: "fip-electro",
-        url: "http://direct.fipradio.fr/live/fip-webradio8.mp3",
+        url: "https://direct.fipradio.fr/live/fip-webradio8.mp3", 
         city: "Paris",
         timezone: "Europe/Paris",
         genres: "Electronic, Electro"
@@ -226,35 +226,35 @@ const radioStations = [
     },
     {
         name: "RNZ Concert",
-        url: "http://radionz.co.nz/Concert_aac128",
+        url: "https://radionz.co.nz/Concert_aac128", 
         city: "Wellington",
         timezone: "Pacific/Auckland",
         genres: "Classical, Contemporary Classical, Opera, Jazz, Arts News"
     },
     {
         name: "WFMU",
-        url: "http://wfmu.org/wfmu.pls",
+        url: "https://wfmu.org/wfmu.pls", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Freeform, Experimental, Garage Rock, Noise, Outsider Music, Eclectic"
     },
     {
         name: "WFMU's Ubu",
-        url: "http://wfmu.org/wfmu_ubu.pls",
+        url: "https://wfmu.org/wfmu_ubu.pls", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Avant-Garde, Experimental, Sound Art, Noise"
     },
     {
         name: "WFMU's Sheena's Jungle Room",
-        url: "http://stream0.wfmu.org/sheena",
+        url: "https://stream0.wfmu.org/sheena", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Exotica, Lounge, Surf, Garage, Psych"
     },
     {
         name: "WFMU's Rock'n'Soul Radio",
-        url: "http://relay2.wfmu.org:80/rocknsoul-live.mp3",
+        url: "https://relay2.wfmu.org:80/rocknsoul-live.mp3", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Rock 'n' Soul, Garage, R&B, Oldies"
@@ -366,7 +366,7 @@ const radioStations = [
     },
     {
         name: "dublab DE",
-        url: "http://dublabde.out.airtime.pro:8000/dublabde_a",
+        url: "https://dublabde.out.airtime.pro:8000/dublabde_a", 
         city: "Cologne",
         timezone: "Europe/Berlin",
         genres: "Electronic, Ambient, Experimental, Jazz, Krautrock"
@@ -380,21 +380,21 @@ const radioStations = [
     },
     {
         name: "KFJC",
-        url: "http://netcast.kfjc.org/",
+        url: "https://netcast.kfjc.org/", 
         city: "Los Altos Hills",
         timezone: "America/Los_Angeles",
         genres: "Psychedelic, Surf, Experimental, Noise, Lo-Fi, Drone, Metal"
     },
     {
         name: "WZBC",
-        url: "http://amber.streamguys.com:4860",
+        url: "https://amber.streamguys.com:4860", 
         city: "Newton, MA",
         timezone: "America/New_York",
         genres: "No Commercial Potential, Modern Rock, Experimental, Noise, Industrial"
     },
     {
         name: "WXYC",
-        url: "http://audio-mp3.ibiblio.org/wxyc.mp3",
+        url: "https://audio-mp3.ibiblio.org/wxyc.mp3", 
         city: "Chapel Hill",
         timezone: "America/New_York",
         genres: "Freeform, Indie Rock, Hip Hop, Electronic, Cyclic"

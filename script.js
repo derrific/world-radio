@@ -15,6 +15,7 @@ let activeStationTimezone = null;
 let currentAudio = null;
 let hls = null;
 let activePlayId = 0;
+let metadataInterval = null;
 
 function updateTime() {
     if (activeStationTimezone) {
@@ -74,7 +75,7 @@ function stopPlayback() {
         hls.destroy();
         hls = null;
     }
-
+if (window.metadataInterval) clearInterval(window.metadataInterval);
     // Reset UI
     currentStation.textContent = "Select a station";
     currentCity.textContent = "";
@@ -110,8 +111,11 @@ async function playStation(station) {
     }
 
     // Reset Metadata
-    nowPlaying.textContent = ""; // Clear previous song
+    nowPlaying.textContent = ""; 
+    nowPlaying.style.display = "none";
+    if (metadataInterval) clearInterval(metadataInterval);
 
+    // Resolve M3U/PLS files if needed
     if (playUrl.includes('.m3u') || playUrl.includes('.pls')) {
         if (!playUrl.includes('.m3u8')) {
             playUrl = await fetchStreamFromPlaylist(playUrl);
@@ -128,32 +132,22 @@ async function playStation(station) {
         currentAudio = new Audio();
         hls.attachMedia(currentAudio);
 
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            if (myPlayId === activePlayId) {
-                currentAudio.play().catch(e => console.error("HLS Play failed:", e));
-            }
-        });
-
-        // NEW: LISTEN FOR METADATA (The "Good" Way)
+        // HLS Metadata Listener
         hls.on(Hls.Events.FRAG_PARSING_METADATA, function (event, data) {
             if (data.samples) {
                 data.samples.forEach(sample => {
-                    // This decodes the hidden ID3 tags in the stream
                     const unit = sample.data;
                     let str = "";
-                    // Simple logic to strip non-printable characters and get the text
                     for (let i = 0; i < unit.length; i++) {
                         if (unit[i] >= 32 && unit[i] <= 126) {
                             str += String.fromCharCode(unit[i]);
                         }
                     }
-                    // If we found a Title (TIT2) or Artist (TPE1) marker, show it
                     if (str.includes("TIT2") || str.includes("TPE1")) {
-                        // Clean up the tag markers to just show the text
                         const cleanText = str.replace(/TIT2|TPE1|TRCK/g, "").trim();
                         if (cleanText.length > 2) {
                             nowPlaying.textContent = cleanText;
-                            nowPlaying.style.display = "block"; // <--- THIS is what makes it appear
+                            nowPlaying.style.display = "block";
                         }
                     }
                 });
@@ -163,21 +157,31 @@ async function playStation(station) {
         hls.on(Hls.Events.ERROR, function (event, data) {
             if (data.fatal) {
                 hls.destroy();
+                // Fallback to standard audio if HLS fails
                 currentAudio.src = playUrl;
-                currentAudio.play();
+                currentAudio.play().catch(e => console.error("HLS Fallback failed:", e));
+                
+                checkMetadata(playUrl);
+                metadataInterval = setInterval(() => checkMetadata(playUrl), 15000);
+            }
+        });
+        
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            if (myPlayId === activePlayId) {
+                currentAudio.play().catch(e => console.error("HLS Play failed:", e));
             }
         });
     }
     else {
+        // STANDARD AUDIO PLAYER
         currentAudio = new Audio();
-        currentAudio.crossOrigin = null; // "anonymous" might help with some CORS issues
-
-        if (!playUrl.includes('?')) {
-            playUrl += `?nocache=${Date.now()}`;
-        }
-
+        // Removed unnecessary crossOrigin and nocache logic here
+        
         currentAudio.src = playUrl;
         currentAudio.play().catch(e => console.error("Playback failed:", e));
+
+        checkMetadata(playUrl); 
+        metadataInterval = setInterval(() => checkMetadata(playUrl), 15000);
     }
 
     // UI Updates
@@ -323,3 +327,21 @@ clearBtn.addEventListener('click', () => {
     // Reset grid
     filterStations();
 });
+
+async function checkMetadata(url) {
+    if (!url) return;
+    
+    // 1. Try to fetch the stream title using a proxy (bypasses CORS & reads SHOUTcast metadata)
+    try {
+        const metadataUrl = `https://radio-metadata-proxy.herokuapp.com/metadata?url=${encodeURIComponent(url)}`;
+        const response = await fetch(metadataUrl);
+        const data = await response.json();
+        
+        if (data.title && data.title !== nowPlaying.textContent) {
+            nowPlaying.textContent = data.title;
+            nowPlaying.style.display = "block";
+        }
+    } catch (e) {
+        // Fail silently
+    }
+}
