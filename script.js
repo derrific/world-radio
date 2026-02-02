@@ -24,7 +24,6 @@ let timeInterval;
 let activeStationTimezone = null;
 let currentAudio = null;
 let hls = null;
-let icecastPlayer = null;
 let activePlayId = 0;
 let metadataInterval = null;
 let currentStationData = null;
@@ -68,8 +67,12 @@ async function fetchStreamFromPlaylist(url) {
 // ===== Stop Playback =====
 function stopPlayback() {
     activePlayId++;
-    if (icecastPlayer) { icecastPlayer.stop(); icecastPlayer = null; }
-    if (currentAudio) { currentAudio.pause(); currentAudio.removeAttribute('src'); currentAudio = null; }
+    if (currentAudio) { 
+        currentAudio.pause(); 
+        currentAudio.removeAttribute('src'); 
+        currentAudio.load();
+        currentAudio = null; 
+    }
     if (hls) { hls.destroy(); hls = null; }
     if (metadataInterval) { clearInterval(metadataInterval); metadataInterval = null; }
     
@@ -111,8 +114,12 @@ async function playStation(station) {
     let playUrl = station.url;
     
     // Kill previous players
-    if (icecastPlayer) { icecastPlayer.stop(); icecastPlayer = null; }
-    if (currentAudio) { currentAudio.pause(); currentAudio.removeAttribute('src'); currentAudio = null; }
+    if (currentAudio) { 
+        currentAudio.pause(); 
+        currentAudio.removeAttribute('src'); 
+        currentAudio.load();
+        currentAudio = null; 
+    }
     if (hls) { hls.destroy(); hls = null; }
     if (metadataInterval) { clearInterval(metadataInterval); metadataInterval = null; }
     
@@ -128,26 +135,8 @@ async function playStation(station) {
     
     const isHLS = playUrl.includes('.m3u8');
     
-    // Try IcecastMetadataPlayer for non-HLS streams
-    if (!isHLS && typeof IcecastMetadataPlayer !== 'undefined') {
-        try {
-            console.log("Using IcecastMetadataPlayer for:", playUrl);
-            icecastPlayer = new IcecastMetadataPlayer(playUrl, {
-                onMetadata: handleMetadata,
-                metadataTypes: ["icy", "ogg"],
-                icyDetectionTimeout: 5000,
-                enableLogging: false,
-                onError: (err) => console.warn("IcecastMetadataPlayer error:", err)
-            });
-            icecastPlayer.play().catch(err => {
-                console.warn("IcecastMetadataPlayer failed, fallback:", err);
-                playWithStandardAudio(playUrl, myPlayId);
-            });
-        } catch (err) {
-            console.warn("IcecastMetadataPlayer init failed:", err);
-            playWithStandardAudio(playUrl, myPlayId);
-        }
-    } else if (isHLS && Hls.isSupported()) {
+    // Use HLS.js for m3u8 streams
+    if (isHLS && Hls.isSupported()) {
         console.log("Using HLS.js for:", playUrl);
         hls = new Hls();
         hls.loadSource(playUrl);
