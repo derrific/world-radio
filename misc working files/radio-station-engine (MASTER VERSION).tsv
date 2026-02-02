@@ -1,0 +1,66 @@
+Station	Stream URL	City	Genres separated by comma	Timezone
+KBYU-FM Classical 89	https://radio.byub.org/classical89/classical89_mp3	Provo/Salt Lake City	"Classical, Opera, Choral, Chamber Music, Symphonic"	America/Denver
+KUER-FM	https://kuer.streamguys1.com/high_icy	Salt Lake City	"NPR News, Jazz (Nightly), Indie Rock (HD2), Public Radio, Storytelling"	America/Denver
+KGRA	https://www.radioking.com/play/kgra-digital-broadcasting/508184	"Independence, Missouri"	"Paranormal, UFOlogy, Alternative Talk, Conspiracies, Fringe Science"	America/Chicago
+WQXR-FM	https://stream.wqxr.org/wqxr	New York	"Classical, Opera, Baroque, Romantic, Symphonic"	America/New_York
+WKCR-FM	http://wkcr.streamguys1.com/live.m3u	New York	"Free Jazz, Avant-Garde, Classical, New Music, American Roots, Salsa, Experimental"	America/New_York
+WBGO Jazz 88	https://ais-sa8.cdnstream1.com/3629_128.mp3	Newark/New York	"Jazz, Blues, Soul, R&B, Bebop, Latin Jazz"	America/New_York
+WWOZ	https://wwoz-sc.streamguys1.com/wwoz-hi.mp3	New Orleans	"New Orleans Jazz, Zydeco, Cajun, Swamp Pop, Blues, R&B, Funk, Soul"	America/Chicago
+TSF Jazz	http://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3	Paris	"Jazz, Swing, Bossa Nova, Soul, Blues"	Europe/Paris
+BBC Radio 3	https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_three.mpd	London	"Classical, Contemporary Classical, Opera, Jazz, World Music, Drama, Arts"	Europe/London
+BBC Radio 6 Music	https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_6music.mpd	London	"Alternative, Indie, Funk, Soul, Dance, Reggae, Experimental"	Europe/London
+BBC Radio 2	https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_two.mpd	London	"Adult Contemporary, Pop, Soul, Country, Folk, Soft Rock"	Europe/London
+BR-Klassik	https://dispatcher.rndfnk.com/br/brklassik/live/mp3/high	Munich	"Classical, Film Scores, Jazz (Late Night), Contemporary Classical"	Europe/Berlin
+Radio Swiss Jazz	https://stream.srg-ssr.ch/m/rsj/mp3_128	Bern	"Jazz, Soul, Blues, Standards, Swing, Bebop"	Europe/Zurich
+Radio Swiss Pop	https://stream.srg-ssr.ch/m/rsp/mp3_128	Bern	"Pop, Soft Rock, Adult Contemporary, Oldies"	Europe/Zurich
+Radio Swiss Classic	https://stream.srg-ssr.ch/m/rsc_de/mp3_128	Bern	"Classical, Baroque, Romantic, Chamber Music"	Europe/Zurich
+Antena 2	https://radiocast.rtp.pt/antena280a.mp3	Lisbon	"Classical, Culture, Early Music, Opera, Avant-Garde"	Europe/Lisbon
+Antena 2 Jazz In	https://radiocast.rtp.pt/antena2jazzin80a.mp3	Lisbon	"Jazz, Smooth Jazz, Vocal Jazz, Bossa Nova"	Europe/Lisbon
+Rádio MEC FM	https://radiomecfm-stream.ebc.com.br/ebc/radiomecfm/playlist.m3u8	Rio de Janeiro	"Classical, Choro, Instrumental Brazilian, Bossa Nova, Chamber Music"	America/Sao_Paulo
+TMC Recife	https://playerservices.streamtheworld.com/api/livestream-redirect/RT_REC.mp3	Recife	"News, Sports, Debates, Interviews"	America/Recife
+Nova Brasil FM Recife	https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_REC.mp3	Recife	"MPB (Música Popular Brasileira), Brazilian Pop, Samba, Adult Contemporary"	America/Recife
+WFMT Classical Music	https://wfmt-live.streamguys1.com/wfmt128-mp3	Chicago	"Classical, Folk, Opera, Live Studio Performances"	America/Chicago
+Rádio Cultura Brasil	https://stm8.painelvox.com:8052/;	São Paulo	"MPB, Brazilian Pop, Samba, Instrumental"	America/Sao_Paulo
+FIP POP	https://icecast.radiofrance.fr/fippop-midfi.mp3	Paris	"Pop, Rock, Chanson"	Europe/Paris
+FIP Hip Hop	https://icecast.radiofrance.fr/fiphiphop-midfi.mp3	Paris	"Hip Hop, Rap, R&B"	Europe/Paris
+FIP autour du jazz	http://direct.fipradio.fr/live/fip-webradio2.mp3	Paris	Jazz	Europe/Paris
+FIP autour du monde	http://direct.fipradio.fr/live/fip-webradio4.mp3	Paris	World Music	Europe/Paris
+FIP autour du groove	http://direct.fipradio.fr/live/fip-webradio3.mp3	Paris	"Funk, Soul, Groove, R&B"	Europe/Paris
+FIP Sacré français !	https://icecast.radiofrance.fr/fipsacrefrancais-midfi.mp3	Paris	"French Chanson, French Pop"	Europe/Paris
+"Tout nouveau, tout FIP"	http://direct.fipradio.fr/live/fip-webradio5.mp3	Paris	"New Releases, Eclectic"	Europe/Paris
+FIP autour de l’électro	http://direct.fipradio.fr/live/fip-webradio8.mp3	Paris	"Electronic, Electro"	Europe/Paris
+KUVO Jazz	https://kuvo-ice.streamguys1.com/kuvo-mp3-128	Denver	"Jazz, Blues, Latin Jazz, Soul, Public Radio"	America/Denver
+KCSM Jazz 91.1	https://ice7.securenetsystems.net/KCSM2	"San Mateo, CA"	"Jazz, Bebop, Big Band, Latin Jazz, Blues"	America/Los_Angeles
+RNZ Concert	http://radionz.co.nz/Concert_aac128	Wellington	"Classical, Contemporary Classical, Opera, Jazz, Arts News"	Pacific/Auckland
+WFMU	http://wfmu.org/wfmu.pls	Jersey City	"Freeform, Experimental, Garage Rock, Noise, Outsider Music, Eclectic"	America/New_York
+WFMU's Ubu	http://wfmu.org/wfmu_ubu.pls	Jersey City	"Avant-Garde, Experimental, Sound Art, Noise"	America/New_York
+WFMU's Sheena's Jungle Room	http://stream0.wfmu.org/sheena	Jersey City	"Exotica, Lounge, Surf, Garage, Psych"	America/New_York
+WFMU's Rock'n'Soul Radio	http://relay2.wfmu.org:80/rocknsoul-live.mp3	Jersey City	"Rock 'n' Soul, Garage, R&B, Oldies"	America/New_York
+NTS Sweat	https://stream-mixtape-geo.ntslive.net/mixtape24	London	"Club, Baile Funk, Reggaeton, Dance"	Europe/London
+NTS Low Key	https://stream-mixtape-geo.ntslive.net/mixtape2	London	"Lo-Fi Hip Hop, R&B, Ambient"	Europe/London
+NTS Radio 1	https://stream-relay-geo.ntslive.net/stream	London	"Eclectic, Underground, Electronic, Hip Hop"	Europe/London
+NTS Radio 2	https://stream-relay-geo.ntslive.net/stream2	London	"Eclectic, Underground"	Europe/London
+NTS Poolside	https://stream-mixtape-geo.ntslive.net/mixtape4	London	"Balearic, Boogie, Sophisti-Pop"	Europe/London
+NTS Feelings	https://stream-mixtape-geo.ntslive.net/mixtape27	London	"Sweet Soul, Gospel, Boogie"	Europe/London
+NTS The Tube	https://stream-mixtape-geo.ntslive.net/mixtape26	London	"Post-Punk, Industrial, Minimal Wave"	Europe/London
+NTS Rap House	https://stream-mixtape-geo.ntslive.net/mixtape22	London	"Rap, Hip Hop, Trap"	Europe/London
+NTS Slow Focus	https://stream-mixtape-geo.ntslive.net/mixtape	London	"Ambient, Drone"	Europe/London
+NTS Expansions	https://stream-mixtape-geo.ntslive.net/mixtape3	London	"Jazz, Fusion, Spiritual Jazz"	Europe/London
+NTS Island Time	https://stream-mixtape-geo.ntslive.net/mixtape21	London	"Reggae, Dub, Dancehall"	Europe/London
+NTS Memory Lane	https://stream-mixtape-geo.ntslive.net/mixtape6	London	"Psychedelic, Folk, Oldies"	Europe/London
+NTS 4 To The Floor	https://stream-mixtape-geo.ntslive.net/mixtape5	London	"House, Techno"	Europe/London
+NTS Field Recordings	https://stream-mixtape-geo.ntslive.net/mixtape23	London	"Field Recordings, Ambient"	Europe/London
+dublab	https://dublab.out.airtime.pro/dublab_a	Los Angeles	"Future Roots, Ambient, Experimental, Psych, Electronic, Indie"	America/Los_Angeles
+dublab DE	http://dublabde.out.airtime.pro:8000/dublabde_a	Cologne	"Electronic, Ambient, Experimental, Jazz, Krautrock"	Europe/Berlin
+Resonance FM	https://stream.resonance.fm/resonance	London	"Sound Art, Experimental, Community, Avant-Garde, Spoken Word, Field Recordings"	Europe/London
+KFJC	http://netcast.kfjc.org/	Los Altos Hills	"Psychedelic, Surf, Experimental, Noise, Lo-Fi, Drone, Metal"	America/Los_Angeles
+WZBC	http://amber.streamguys.com:4860	"Newton, MA"	"No Commercial Potential, Modern Rock, Experimental, Noise, Industrial"	America/New_York
+WXYC	http://audio-mp3.ibiblio.org/wxyc.mp3	Chapel Hill	"Freeform, Indie Rock, Hip Hop, Electronic, Cyclic"	America/New_York
+Kiosk Radio	https://kioskradio.stream.laut.fm/kioskradio	Brussels	"Eclectic, Electronic, DJ Sets, Community, World, House, Disco"	Europe/Brussels
+Noods Radio	https://noodsradio.out.airtime.pro/noodsradio_a	Bristol	"Underground, Electronic, Post-Punk, Industrial, Techno, Ambient"	Europe/London
+Refuge Worldwide	https://streaming.radio.co/s3699c5e49/listen	Berlin	"Community, Electronic, Social Issues, Talk, Global Club, Ambient"	Europe/Berlin
+WBEZ	https://stream.wbez.org/wbez128.mp3	Chicago	"NPR News, Talk, Storytelling"	America/Chicago
+"New Sounds - WQXR-HD2	"	https://q2stream.wqxr.org/q2	New York	"New Music, Contemporary Classical, World, Electronic"	America/New_York
+WNYC-FM	https://fm939.wnyc.org/wnycfm	New York	"Public Radio, News, Talk, Cultural Programming"	America/New_York
+93.9 HD2 | WQXR-FM - WNYC-HD2 (Classical)	https://stream.wqxr.org/wqxr	New York	"Classical, Opera, Symphonic"	America/New_York
+WNYC's New Standards	https://tjc.wnyc.org/js-stream	New York	"American Songbook, Jazz, Vocal Jazz, Pop Standards"	America/New_York

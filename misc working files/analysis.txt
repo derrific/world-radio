@@ -1,0 +1,59 @@
+ANALYSIS OF RADIO-STATION-ENGINE.JS
+===================================
+System: HTML5 Audio + HLS.js
+Metadata Method: HLS Fragment Parsing (Client-Side)
+
+LEGEND:
+✅ = YES (Expected to work)
+❌ = NO (Expected to fail)
+⚠️ = MAYBE (Depends on playlist resolution)
+
+----------------------------------------------------------------------------------------------------
+| STATION NAME                         | PLAY AUDIO? | SHOW METADATA? | NOTES
+----------------------------------------------------------------------------------------------------
+| KBYU-FM Classical 89                 | ✅ YES      | ❌ NO          | Standard MP3 stream. No text data.
+| KUER-FM                              | ✅ YES      | ❌ NO          | ICY stream. Audio works, text hidden.
+| KGRA                                 | ✅ YES      | ❌ NO          | Standard stream.
+| WQXR-FM                              | ✅ YES      | ❌ NO          | Standard stream.
+| WKCR-FM                              | ✅ YES      | ❌ NO          | .m3u playlist. Resolves to MP3, not HLS.
+| WBGO Jazz 88                         | ✅ YES      | ❌ NO          | MP3.
+| WWOZ                                 | ✅ YES      | ❌ NO          | MP3.
+| TSF Jazz                             | ✅ YES      | ❌ NO          | MP3.
+| BBC Radio 3                          | ❌ BROKEN   | ❌ NO          | .mpd (DASH) format is NOT supported by HLS.js.
+| BBC Radio 6 Music                    | ❌ BROKEN   | ❌ NO          | .mpd (DASH) format is NOT supported by HLS.js.
+| BBC Radio 2                          | ❌ BROKEN   | ❌ NO          | .mpd (DASH) format is NOT supported by HLS.js.
+| BR-Klassik                           | ✅ YES      | ❌ NO          | MP3.
+| Radio Swiss Jazz                     | ✅ YES      | ❌ NO          | MP3.
+| Radio Swiss Pop                      | ✅ YES      | ❌ NO          | MP3.
+| Radio Swiss Classic                  | ✅ YES      | ❌ NO          | MP3.
+| Antena 2                             | ✅ YES      | ❌ NO          | MP3.
+| Antena 2 Jazz In                     | ✅ YES      | ❌ NO          | MP3.
+| Rádio MEC FM                         | ✅ YES      | ✅ YES         | THE WINNER. Uses .m3u8 (HLS). Should show text.
+| TMC Recife                           | ✅ YES      | ❌ NO          | MP3.
+| Nova Brasil FM Recife                | ✅ YES      | ❌ NO          | MP3.
+| WFMT Classical Music                 | ✅ YES      | ❌ NO          | MP3.
+| Rádio Cultura Brasil                 | ✅ YES      | ❌ NO          | Shoutcast/Icecast.
+| FIP (All 8 Channels)                 | ✅ YES      | ❌ NO          | All FIP streams listed are MP3 mid-fi.
+| KUVO Jazz                            | ✅ YES      | ❌ NO          | MP3.
+| KCSM Jazz 91.1                       | ✅ YES      | ❌ NO          | MP3.
+| RNZ Concert                          | ✅ YES      | ❌ NO          | AAC Stream.
+| WFMU (All 4 Channels)                | ✅ YES      | ❌ NO          | .pls playlist. Resolves to MP3.
+| NTS (All 14 Channels)                | ✅ YES      | ❌ NO          | Standard HTTP streams. No HLS metadata.
+| dublab (US & DE)                     | ✅ YES      | ❌ NO          | Standard streams.
+| Resonance FM                         | ✅ YES      | ❌ NO          | Standard stream.
+| KFJC                                 | ✅ YES      | ❌ NO          | Standard stream.
+| WZBC                                 | ✅ YES      | ❌ NO          | Standard stream.
+| WXYC                                 | ✅ YES      | ❌ NO          | MP3.
+| Kiosk Radio                          | ✅ YES      | ❌ NO          | Standard stream.
+| Noods Radio                          | ✅ YES      | ❌ NO          | Standard stream.
+| Refuge Worldwide                     | ✅ YES      | ❌ NO          | Standard stream.
+| WBEZ                                 | ✅ YES      | ❌ NO          | MP3.
+| New Sounds / WQXR-HD2                | ✅ YES      | ❌ NO          | Standard stream.
+| WNYC-FM                              | ✅ YES      | ❌ NO          | Standard stream.
+| 93.9 HD2 (WQXR)                      | ✅ YES      | ❌ NO          | Standard stream.
+| WNYC's New Standards                 | ✅ YES      | ❌ NO          | Standard stream.
+----------------------------------------------------------------------------------------------------
+
+SUMMARY ACTIONS REQUIRED:
+1. FIX AUDIO: The 3 BBC stations need to be switched to HLS (.m3u8) links to play at all.
+2. ENABLE METADATA: To get "Now Playing" text for other stations, you must hunt down their HLS (.m3u8) stream URLs. The current MP3 links will never show text.
