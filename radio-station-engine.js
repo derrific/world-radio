@@ -1,24 +1,27 @@
 const radioStations = [
     // ========== NORTH AMERICA - EAST ==========
     {
-        name: "WQXR-FM",
-        url: "https://stream.wqxr.org/wqxr",
-        city: "New York",
-        timezone: "America/New_York",
-        genres: "Classical, Opera, Baroque, Romantic, Symphonic"
-    },
-    {
         name: "WKCR-FM",
         url: "https://wkcr.streamguys1.com/live.m3u", 
         city: "New York",
         timezone: "America/New_York",
+        category: "favorite",
         genres: "Free Jazz, Avant-Garde, Classical, New Music, American Roots, Salsa, Experimental"
+    },
+    {
+        name: "n10.as",
+        url: "https://n10as.out.airtime.pro/n10as_a",
+        city: "Montréal",
+        timezone: "America/Toronto",
+        category: "favorite",
+        genres: "Experimental, Electronic, Ambient, Sound Art"
     },
     {
         name: "WBGO Jazz 88",
         url: "https://ais-sa8.cdnstream1.com/3629_128.mp3",
         city: "Newark",
         timezone: "America/New_York",
+        category: "favorite",
         genres: "Jazz, Blues, Soul, R&B, Bebop, Latin Jazz"
     },
     {
@@ -33,11 +36,12 @@ const radioStations = [
         url: "https://fm939.wnyc.org/wnycfm",
         city: "New York",
         timezone: "America/New_York",
+        category: "favorite",
         genres: "Public Radio, News, Talk, Cultural Programming"
     },
     {
-        name: "93.9 HD2 | WQXR-FM",
-        url: "https://stream.wqxr.org/wqxr.mp3",
+        name: "WQXR",
+        url: "https://stream.wqxr.org/wqxr.mp3", //Should I instead use "https://stream.wqxr.org/wqxr"?
         city: "New York",
         timezone: "America/New_York",
         genres: "Classical, Opera, Symphonic"
@@ -68,6 +72,7 @@ const radioStations = [
         url: "https://thelot.out.airtime.pro/thelot_a",
         city: "Brooklyn",
         timezone: "America/New_York",
+        category: "favorite",
         genres: "Eclectic, Underground, Electronic, Disco, House, Community"
     },
     
@@ -77,6 +82,7 @@ const radioStations = [
         url: "https://wwoz-sc.streamguys1.com/wwoz-hi.mp3",
         city: "New Orleans",
         timezone: "America/Chicago",
+        category: "favorite",
         genres: "New Orleans Jazz, Zydeco, Cajun, Swamp Pop, Blues, R&B, Funk, Soul"
     },
     
@@ -155,6 +161,7 @@ const radioStations = [
         url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR2_TOR@383180/master.m3u8",
         city: "Toronto",
         timezone: "America/Toronto",
+        category: "favorite",
         genres: "Eclectic, Canadian, Indie, Jazz, Classical, Folk, World"
     },
     {
@@ -162,6 +169,7 @@ const radioStations = [
         url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR1_TOR@118420/master.m3u8",
         city: "Toronto",
         timezone: "America/Toronto",
+        category: "favorite",
         genres: "Public Radio, News, Talk, Arts, Culture"
     },
     {
@@ -172,25 +180,26 @@ const radioStations = [
         genres: "Eclectic, Jazz, Blues, Folk, Classical, World, Roots"
     },
     {
-        name: "CJSW Calgary",
+        name: "CJSW",
         url: "https://cjsw.leanstream.co/CJSWFM-MP3",
         city: "Calgary",
         timezone: "America/Edmonton",
         genres: "Freeform, Indie, Punk, Electronic, World, Experimental"
     },
     {
-        name: "CITR Vancouver",
+        name: "CITR",
         url: "https://live.citr.ca/live.mp3",
         city: "Vancouver",
         timezone: "America/Vancouver",
+        category: "favorite",
         genres: "Freeform, Indie, Electronic, Punk, Talk, Community"
     },
     {
-        name: "Espace Musique Montréal",
-        url: "https://rcavliveaudio.akamaized.net/hls/live/2006999/M-7QMTL0_MTL/master.m3u8",
+        name: "ICI Musique Montréal",
+        url: "https://playerservices.streamtheworld.com/api/livestream-redirect/CBFXFM_SRC.mp3",
         city: "Montréal",
         timezone: "America/Toronto",
-        genres: "French Canadian, Classical, Jazz, World, Chanson"
+        genres: "French Canadian, Classical, Jazz, World, Folk, French-language Chanson"
     },
     
     // ========== BRAZIL ==========
@@ -206,6 +215,7 @@ const radioStations = [
         url: "https://stream.radio.usp.br:8443/uspfm.mp3",
         city: "São Paulo",
         timezone: "America/Sao_Paulo",
+        category: "favorite",
         genres: "Eclectic, Brazilian, Jazz, Rock, World, MPB, University"
     },
     {
@@ -369,6 +379,7 @@ const radioStations = [
         url: "https://s2.radio.co/s2c3cc784b/listen",
         city: "London",
         timezone: "Europe/London",
+        category: "favorite",
         genres: "Eclectic, Electronic, Indie, Soul, Jazz, Community"
     },
     {
@@ -495,14 +506,8 @@ const radioStations = [
         url: "https://redlightradio.out.airtime.pro:8443/redlightradio_a",
         city: "Amsterdam",
         timezone: "Europe/Amsterdam",
+        category: "favorite",
         genres: "Underground, Electronic, Disco, House, Experimental"
-    },
-    {
-        name: "n10.as",
-        url: "https://n10as.out.airtime.pro/n10as_a",
-        city: "Rotterdam",
-        timezone: "Europe/Amsterdam",
-        genres: "Experimental, Electronic, Ambient, Sound Art"
     },
     
     // ========== EUROPE - SWITZERLAND ==========
@@ -559,6 +564,7 @@ const radioStations = [
         url: "https://n0c.radiojar.com/4xqhqqjtdzzuv?rj-ttl=5",
         city: "Bethlehem",
         timezone: "Asia/Jerusalem",
+        category: "favorite",
         genres: "Palestinian, Arabic, Electronic, Talk, Community"
     },
 ];
