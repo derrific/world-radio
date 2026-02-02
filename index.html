@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Radio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="player-container">
+        <h1>World Radio</h1>
+
+        <div class="current-info">
+            <img id="current-image" src="" alt="" style="display: none;">
+            <div class="current-text">
+                <h2 id="current-station">Select a station</h2>
+                <p id="now-playing"></p>
+                <p id="current-city"></p>
+                <p id="current-time"></p>
+                <p id="current-genres"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-container">
+        <span class="filter-label">ONLY SHOW:</span>
+        <button id="clear-btn" style="display: none;">(Clear)</button>
+        <div id="genre-checkboxes" class="genre-list">
+        </div>
+    </div>
+
+    <div id="station-grid" class="station-grid">
+    </div>
+    
+    <div class="footer-links">
+        <p>Stream Tools:</p>
+        <a href="https://fmstream.org/index.php?s=wbez" target="_blank">FMStream</a>
+        <span>•</span>
+        <a href="https://streamurl.link/station/wnyc-s-new-standards/" target="_blank">StreamURL</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script src="radio-station-engine.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
