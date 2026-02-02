@@ -219,7 +219,7 @@ const radioStations = [
         genres: "Eclectic, Brazilian, Jazz, Rock, World, MPB, University"
     },
     {
-        name: "Rádio Cultura FM São Paulo",
+        name: "Rádio Cultura",
         url: "https://stream-ice.culturafm.com.br:8443/culturafm.aac",
         city: "São Paulo",
         timezone: "America/Sao_Paulo",
@@ -233,7 +233,7 @@ const radioStations = [
         genres: "MPB (Música Popular Brasileira), Brazilian Pop, Samba, Adult Contemporary"
     },
     {
-        name: "Rádio Eldorado São Paulo",
+        name: "Rádio Eldorado",
         url: "https://ice.fabricahost.com.br/radioeldoradofm",
         city: "São Paulo",
         timezone: "America/Sao_Paulo",
