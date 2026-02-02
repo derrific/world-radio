@@ -7,8 +7,6 @@ const currentImage = document.getElementById('current-image');
 const currentGenres = document.getElementById('current-genres');
 const clearBtn = document.getElementById('clear-btn');
 const nowPlaying = document.getElementById('now-playing');
-const identifyBtn = document.getElementById('identify-btn');
-const identifyResult = document.getElementById('identify-result');
 
 const toggleGenresBtn = document.getElementById('toggle-genres');
 const toggleTimezonesBtn = document.getElementById('toggle-timezones');
@@ -84,8 +82,6 @@ function stopPlayback() {
     currentGenres.innerHTML = "";
     currentImage.style.display = 'none';
     currentImage.src = "";
-    identifyBtn.style.display = 'none';
-    identifyResult.textContent = "";
     currentStationData = null;
     activeStationTimezone = null;
     if (timeInterval) clearInterval(timeInterval);
@@ -125,7 +121,6 @@ async function playStation(station) {
     
     nowPlaying.textContent = "";
     nowPlaying.style.display = "none";
-    identifyResult.textContent = "";
     
     // Resolve M3U/PLS (but not m3u8)
     if ((playUrl.includes('.m3u') || playUrl.includes('.pls')) && !playUrl.includes('.m3u8')) {
@@ -196,7 +191,6 @@ async function playStation(station) {
     
     currentImage.src = station.image;
     currentImage.style.display = 'block';
-    identifyBtn.style.display = 'flex';
     
     activeStationTimezone = station.timezone;
     updateTime();
@@ -427,35 +421,6 @@ function renderStationGrid(stations) {
     // Re-apply filters
     filterStations();
 }
-
-// ===== Audio Identification (Shazam-like) =====
-// Note: This requires setting up ACRCloud or similar service
-// For now, this is a placeholder that shows how it would work
-identifyBtn?.addEventListener('click', async () => {
-    identifyResult.textContent = "Listening...";
-    identifyResult.className = "identify-result";
-    identifyBtn.classList.add('listening');
-    identifyBtn.querySelector('.identify-text').textContent = "Listening...";
-    
-    // This would require:
-    // 1. Recording audio from the stream (Web Audio API)
-    // 2. Sending to ACRCloud or similar service
-    // 3. Displaying the result
-    
-    // Placeholder: After 3 seconds, show a message
-    setTimeout(() => {
-        identifyBtn.classList.remove('listening');
-        identifyBtn.querySelector('.identify-text').textContent = "What's Playing?";
-        
-        // Check if we already have metadata
-        if (nowPlaying.textContent && nowPlaying.style.display !== 'none') {
-            identifyResult.textContent = `From metadata: ${nowPlaying.textContent}`;
-        } else {
-            identifyResult.textContent = "Audio identification requires ACRCloud API setup. See docs for integration.";
-            identifyResult.className = "identify-result error";
-        }
-    }, 3000);
-});
 
 // ===== Toggle Handlers =====
 toggleGenresBtn?.addEventListener('click', () => {

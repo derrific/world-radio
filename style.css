@@ -91,59 +91,6 @@ h1 {
     font-weight: 500;
 }
 
-/* ===== IDENTIFY BUTTON (Shazam-like) ===== */
-.identify-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #1DB954, #1aa34a);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin: 10px 0;
-}
-
-.identify-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(29, 185, 84, 0.4);
-}
-
-.identify-btn:active {
-    transform: scale(0.98);
-}
-
-.identify-btn.listening {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-}
-
-.identify-icon {
-    font-size: 18px;
-}
-
-.identify-result {
-    font-size: 13px;
-    color: #1DB954;
-    margin: 5px 0 10px;
-    max-width: 300px;
-    text-align: center;
-}
-
-.identify-result.error {
-    color: #ff6b6b;
-}
-
 /* ===== FILTER TOGGLES ===== */
 .filter-toggles {
     display: flex;
