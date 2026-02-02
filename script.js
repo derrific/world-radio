@@ -60,7 +60,7 @@ async function fetchStreamFromPlaylist(url) {
     }
 }
 
-// NEW: Function to stop everything and reset UI
+// Stop everything and reset UI
 function stopPlayback() {
     // Increment ticket to invalidate any pending loads
     activePlayId++;
@@ -80,7 +80,7 @@ if (window.metadataInterval) clearInterval(window.metadataInterval);
     currentStation.textContent = "Select a station";
     currentCity.textContent = "";
     nowPlaying.textContent = "";
-    nowPlaying.style.display = "none"; // <--- Resets it to hidden for the next station
+    nowPlaying.style.display = "none";
     currentTime.textContent = "";
     currentGenres.innerHTML = "";
 
@@ -132,7 +132,7 @@ async function playStation(station) {
         currentAudio = new Audio();
         hls.attachMedia(currentAudio);
 
-        // 1. Listen for In-Stream Metadata (Standard HLS)
+        // Listen for In-Stream Metadata (Standard HLS)
         hls.on(Hls.Events.FRAG_PARSING_METADATA, function (event, data) {
             if (data.samples) {
                 data.samples.forEach(sample => {
@@ -169,7 +169,7 @@ async function playStation(station) {
             }
         });
 
-        // 2. FORCE EXTERNAL METADATA CHECK (The Fix)
+        // FORCE EXTERNAL METADATA CHECK (The Fix)
         // Even though it's HLS, we poll the proxy in case the stream lacks embedded tags
         if (metadataInterval) clearInterval(metadataInterval);
         checkMetadata(playUrl);
@@ -215,12 +215,12 @@ async function playStation(station) {
     timeInterval = setInterval(updateTime, 1000);
 }
 
-// NEW: Extract unique genres and build checkboxes
+// Extract unique genres and build checkboxes
 function createGenreFilter() {
     const genreContainer = document.getElementById('genre-checkboxes');
     const allGenres = new Set();
 
-    // 1. Extract and Clean Genres
+    // Extract and Clean Genres
     radioStations.forEach(station => {
         if (station.genres) {
             station.genres.split(',').forEach(g => {
@@ -229,10 +229,10 @@ function createGenreFilter() {
         }
     });
 
-    // 2. Sort Alphabetically
+    // Sort Alphabetically
     const sortedGenres = Array.from(allGenres).sort();
 
-    // 3. Create HTML
+    // Create HTML
     sortedGenres.forEach(genre => {
         const label = document.createElement('label');
         label.className = 'genre-item';
@@ -290,10 +290,10 @@ function toggleGenreFilter(genreName) {
 }
 
 function init() {
-    // 1. Build Filter UI
+    // Build Filter UI
     createGenreFilter();
 
-    // 2. Build Grid
+    // Build Grid
     const stationsWithImages = radioStations.map(station => ({
         ...station,
         image: `radio-images/${station.imageFilename || station.name}.webp`
@@ -334,7 +334,7 @@ clearBtn.addEventListener('click', () => {
 async function checkMetadata(url) {
     if (!url) return;
     
-    // 1. Try to fetch the stream title using a proxy (bypasses CORS & reads SHOUTcast metadata)
+    // Try to fetch the stream title using a proxy (bypasses CORS & reads SHOUTcast metadata)
     try {
         const metadataUrl = `https://radio-metadata-proxy.herokuapp.com/metadata?url=${encodeURIComponent(url)}`;
         const response = await fetch(metadataUrl);

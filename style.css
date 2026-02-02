@@ -256,6 +256,6 @@ h1 {
 }
 
 .footer-links a:hover {
-    color: #4CAF50; /* Matches your green accent */
+    color: #4CAF50; 
     border-bottom: 1px solid #4CAF50;
 }
