@@ -57,21 +57,21 @@ const radioStations = [
     },
     {
         name: "BBC Radio 3",
-        url: "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_three.mpd",
+        url: "https://as-hls-ww-live.akamaized.net/pool_23461179/live/ww/bbc_radio_three/bbc_radio_three.isml/bbc_radio_three-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_three.mpd",
         city: "London",
         timezone: "Europe/London",
         genres: "Classical, Contemporary Classical, Opera, Jazz, World Music, Drama, Arts"
     },
     {
         name: "BBC Radio 6 Music",
-        url: "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_6music.mpd",
+        url: "https://as-hls-ww-live.akamaized.net/pool_81827798/live/ww/bbc_6music/bbc_6music.isml/bbc_6music-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_6music.mpd",
         city: "London",
         timezone: "Europe/London",
         genres: "Alternative, Indie, Funk, Soul, Dance, Reggae, Experimental"
     },
     {
         name: "BBC Radio 2",
-        url: "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_two.mpd",
+        url: "https://as-hls-ww-live.akamaized.net/pool_74208725/live/ww/bbc_radio_two/bbc_radio_two.isml/bbc_radio_two-audio%3d96000.norewind.m3u8",//Was "https://a.files.bbci.co.uk/ms6/live/3441A116-B12E-4D2F-ACA8-C1984642FA4B/audio/simulcast/dash/nonuk/pc_hd_abr_v2/aks/bbc_radio_two.mpd",
         city: "London",
         timezone: "Europe/London",
         genres: "Adult Contemporary, Pop, Soul, Country, Folk, Soft Rock"
@@ -443,7 +443,7 @@ const radioStations = [
     },
     {
         name: "93.9 HD2 | WQXR-FM - WNYC-HD2 (Classical)",
-        url: "https://stream.wqxr.org/wqxr",
+        url: "https://stream.wqxr.org/wqxr.mp3", //Was "https://stream.wqxr.org/wqxr",
         city: "New York",
         timezone: "America/New_York",
         genres: "Classical, Opera, Symphonic"
