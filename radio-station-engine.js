@@ -146,13 +146,15 @@ const radioStations = [
         timezone: "America/Chicago",
         genres: "Classical, Folk, Opera, Live Studio Performances"
     },
+    /*
     {
         name: "Rádio Cultura Brasil",
-        url: "https://stm8.painelvox.com:8052/;",
+        url: "https://evpp.mm.uol.com.br/cultura2/cultura2.sdp/playlist.m3u8",//Was "https://stm8.painelvox.com:8052/;",
         city: "São Paulo",
         timezone: "America/Sao_Paulo",
         genres: "MPB, Brazilian Pop, Samba, Instrumental"
     },
+    */
     {
         name: "FIP POP",
         url: "https://icecast.radiofrance.fr/fippop-midfi.mp3",
@@ -226,21 +228,21 @@ const radioStations = [
     },
     {
         name: "RNZ Concert",
-        url: "https://radionz.co.nz/Concert_aac128", 
+        url: "https://radionz-ice.streamguys.com/concert.mp3", //Was "https://radionz.co.nz/Concert_aac128", 
         city: "Wellington",
         timezone: "Pacific/Auckland",
         genres: "Classical, Contemporary Classical, Opera, Jazz, Arts News"
     },
     {
         name: "WFMU",
-        url: "https://wfmu.org/wfmu.pls", 
+        url: "https://stream0.wfmu.org/freeform-high.aac",//Was "https://wfmu.org/wfmu.pls", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Freeform, Experimental, Garage Rock, Noise, Outsider Music, Eclectic"
     },
     {
         name: "WFMU's Ubu",
-        url: "https://wfmu.org/wfmu_ubu.pls", 
+        url: "https://stream0.wfmu.org/wfmu_ubu.aac", //was something else
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Avant-Garde, Experimental, Sound Art, Noise"
@@ -254,7 +256,7 @@ const radioStations = [
     },
     {
         name: "WFMU's Rock'n'Soul Radio",
-        url: "https://relay2.wfmu.org:80/rocknsoul-live.mp3", 
+        url: "https://stream0.wfmu.org/rocknsoul-128k.mp3", //Was "https://relay2.wfmu.org:80/rocknsoul-live.mp3", 
         city: "Jersey City",
         timezone: "America/New_York",
         genres: "Rock 'n' Soul, Garage, R&B, Oldies"

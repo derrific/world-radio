@@ -132,7 +132,7 @@ async function playStation(station) {
         currentAudio = new Audio();
         hls.attachMedia(currentAudio);
 
-        // HLS Metadata Listener
+        // 1. Listen for In-Stream Metadata (Standard HLS)
         hls.on(Hls.Events.FRAG_PARSING_METADATA, function (event, data) {
             if (data.samples) {
                 data.samples.forEach(sample => {
@@ -160,9 +160,6 @@ async function playStation(station) {
                 // Fallback to standard audio if HLS fails
                 currentAudio.src = playUrl;
                 currentAudio.play().catch(e => console.error("HLS Fallback failed:", e));
-                
-                checkMetadata(playUrl);
-                metadataInterval = setInterval(() => checkMetadata(playUrl), 15000);
             }
         });
         
@@ -171,6 +168,12 @@ async function playStation(station) {
                 currentAudio.play().catch(e => console.error("HLS Play failed:", e));
             }
         });
+
+        // 2. FORCE EXTERNAL METADATA CHECK (The Fix)
+        // Even though it's HLS, we poll the proxy in case the stream lacks embedded tags
+        if (metadataInterval) clearInterval(metadataInterval);
+        checkMetadata(playUrl);
+        metadataInterval = setInterval(() => checkMetadata(playUrl), 15000);
     }
     else {
         // STANDARD AUDIO PLAYER
