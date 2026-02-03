@@ -16,6 +16,7 @@ const timezoneFilter = document.getElementById('timezone-filter');
 
 const sortAlphaBtn = document.getElementById('sort-alpha');
 const sortCityBtn = document.getElementById('sort-city');
+const sortGenreBtn = document.getElementById('sort-genre');
 const sortGeoBtn = document.getElementById('sort-geo');
 
 // ===== State =====
@@ -380,12 +381,15 @@ function sortStations(mode) {
     currentSortMode = mode;
     
     let sorted;
+    let showTimezoneHeaders = false;
+    let showGenreHeaders = false;
+    
     if (mode === 'alpha') {
         sorted = [...stationsWithImages].sort((a, b) => a.name.localeCompare(b.name));
     } else if (mode === 'city') {
         sorted = [...stationsWithImages].sort((a, b) => a.city.localeCompare(b.city));
     } else if (mode === 'geo') {
-        // Sort by UTC offset (west to east, starting from Hawaii)
+        showTimezoneHeaders = true;
         sorted = [...stationsWithImages].sort((a, b) => {
             const now = new Date();
             const offsetA = new Date(now.toLocaleString('en-US', { timeZone: a.timezone })).getTime();
@@ -393,21 +397,44 @@ function sortStations(mode) {
             if (offsetA !== offsetB) return offsetA - offsetB;
             return a.city.localeCompare(b.city);
         });
+    } else if (mode === 'genre') {
+        showGenreHeaders = true;
+        // Collect all unique genres, sorted alphabetically
+        const allGenres = new Set();
+        stationsWithImages.forEach(s => {
+            if (s.genres) {
+                s.genres.split(',').forEach(g => allGenres.add(g.trim()));
+            }
+        });
+        const sortedGenres = Array.from(allGenres).sort((a, b) => a.localeCompare(b));
+        
+        // Build array with stations repeated under each genre
+        sorted = [];
+        sortedGenres.forEach(genre => {
+            const stationsInGenre = stationsWithImages
+                .filter(s => s.genres && s.genres.includes(genre))
+                .sort((a, b) => a.name.localeCompare(b.name));
+            stationsInGenre.forEach(s => {
+                sorted.push({ ...s, _currentGenre: genre });
+            });
+        });
     }
     
-    renderStationGrid(sorted, mode === 'geo');
+    renderStationGrid(sorted, showTimezoneHeaders, showGenreHeaders);
     
     // Update button states
-    [sortAlphaBtn, sortCityBtn, sortGeoBtn].forEach(btn => btn.classList.remove('active'));
+    [sortAlphaBtn, sortCityBtn, sortGeoBtn, sortGenreBtn].forEach(btn => btn.classList.remove('active'));
     if (mode === 'alpha') sortAlphaBtn.classList.add('active');
     else if (mode === 'city') sortCityBtn.classList.add('active');
     else if (mode === 'geo') sortGeoBtn.classList.add('active');
+    else if (mode === 'genre') sortGenreBtn.classList.add('active');
 }
 
-function renderStationGrid(stations, showTimezoneHeaders = false) {
+function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeaders = false) {
     stationGrid.innerHTML = '';
     
     let currentOffset = null;
+    let currentGenre = null;
     
     stations.forEach(station => {
         // Add timezone header if in geo mode and offset changed
@@ -418,7 +445,6 @@ function renderStationGrid(stations, showTimezoneHeaders = false) {
             if (offset !== currentOffset) {
                 currentOffset = offset;
                 
-                // Find all timezones that share this offset
                 const matchingTimezones = [...new Set(stations
                     .filter(s => {
                         const sOffset = new Date(now.toLocaleString('en-US', { timeZone: s.timezone })).getTime();
@@ -432,6 +458,15 @@ function renderStationGrid(stations, showTimezoneHeaders = false) {
                 header.textContent = matchingTimezones.join(' / ');
                 stationGrid.appendChild(header);
             }
+        }
+        
+        // Add genre header if in genre mode and genre changed
+        if (showGenreHeaders && station._currentGenre !== currentGenre) {
+            currentGenre = station._currentGenre;
+            const header = document.createElement('h2');
+            header.className = 'timezone-header';
+            header.textContent = currentGenre;
+            stationGrid.appendChild(header);
         }
         
         const div = document.createElement('div');
@@ -487,6 +522,7 @@ clearBtn?.addEventListener('click', () => {
 // ===== Sort Button Handlers =====
 sortAlphaBtn?.addEventListener('click', () => sortStations('alpha'));
 sortCityBtn?.addEventListener('click', () => sortStations('city'));
+sortGenreBtn?.addEventListener('click', () => sortStations('genre'));
 sortGeoBtn?.addEventListener('click', () => sortStations('geo'));
 
 // ===== Initialization =====

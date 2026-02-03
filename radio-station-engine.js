@@ -62,12 +62,13 @@ const radioStations = [
     },
     {
         name: "n10.as",
-        url: "https://n10as.out.airtime.pro/n10as_a",
+        url: "https://n10as.radiocult.fm/stream",
         city: "Montréal",
         timezone: "America/Toronto",
         category: "favorite",
         genres: "Experimental, Electronic, Ambient, Sound Art"
     },
+    
     {
         name: "WBGO Jazz 88",
         url: "https://ais-sa8.cdnstream1.com/3629_128.mp3",
@@ -119,14 +120,16 @@ const radioStations = [
         timezone: "America/New_York",
         genres: "Freeform, Indie Rock, Hip Hop, Electronic, Cyclic"
     },
+    /*Cannot verify stream (NOTE, WE SHOULD USE VIDEO FOR THIS ONE):
     {
         name: "The Lot Radio",
-        url: "https://thelot.out.airtime.pro/thelot_a",
+        url: "https://livepeercdn.studio/hls/85c28sa2o8wppm58/index.m3u8",
         city: "Brooklyn",
         timezone: "America/New_York",
         category: "favorite",
         genres: "Eclectic, Underground, Electronic, Disco, House, Community"
     },
+    */
     
     // ========== NORTH AMERICA - SOUTH ==========
     {
@@ -208,14 +211,17 @@ const radioStations = [
     },
     
     // ========== CANADA ==========
+    /*Cannot verify stream:
     {
         name: "CBC Music Toronto",
-        url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR2_TOR@383180/master.m3u8",
+        url: "https://cbcliveradio2-lh.akamaihd.net/i/CBCR2_TOR@382863/master.m3u8",
         city: "Toronto",
         timezone: "America/Toronto",
         category: "favorite",
         genres: "Eclectic, Canadian, Indie, Jazz, Classical, Folk, World"
     },
+    */
+    /*Cannot verify stream:
     {
         name: "CBC Radio One Toronto",
         url: "https://cbcliveradio-lh.akamaihd.net/i/CBCR1_TOR@118420/master.m3u8",
@@ -224,6 +230,8 @@ const radioStations = [
         category: "favorite",
         genres: "Public Radio, News, Talk, Arts, Culture"
     },
+    */
+    /*Cannot verify stream:
     {
         name: "CKUA Radio",
         url: "https://ckua.streamon.fm/listen-hls.m3u8",
@@ -231,6 +239,7 @@ const radioStations = [
         timezone: "America/Edmonton",
         genres: "Eclectic, Jazz, Blues, Folk, Classical, World, Roots"
     },
+    */
     {
         name: "CJSW",
         url: "https://cjsw.leanstream.co/CJSWFM-MP3",
@@ -262,6 +271,7 @@ const radioStations = [
         timezone: "America/Sao_Paulo",
         genres: "Classical, Choro, Instrumental Brazilian, Bossa Nova, Chamber Music"
     },
+    /*Cannot verify stream:
     {
         name: "Rádio USP FM",
         url: "https://stream.radio.usp.br:8443/uspfm.mp3",
@@ -270,6 +280,8 @@ const radioStations = [
         category: "favorite",
         genres: "Eclectic, Brazilian, Jazz, Rock, World, MPB, University"
     },
+    */
+    /*Cannot verify stream:
     {
         name: "Rádio Cultura",
         url: "https://stream-ice.culturafm.com.br:8443/culturafm.aac",
@@ -277,6 +289,7 @@ const radioStations = [
         timezone: "America/Sao_Paulo",
         genres: "Classical, Opera, Chamber Music, Symphonic"
     },
+    */
     {
         name: "Nova Brasil FM Recife",
         url: "https://playerservices.streamtheworld.com/api/livestream-redirect/NOVABRASIL_REC.mp3",
@@ -284,6 +297,7 @@ const radioStations = [
         timezone: "America/Recife",
         genres: "MPB (Música Popular Brasileira), Brazilian Pop, Samba, Adult Contemporary"
     },
+    /*
     {
         name: "Rádio Eldorado",
         url: "https://ice.fabricahost.com.br/radioeldoradofm",
@@ -291,6 +305,7 @@ const radioStations = [
         timezone: "America/Sao_Paulo",
         genres: "News, Classical, Jazz, MPB, Culture"
     },
+    */
 
     // ========== EUROPE - UK ==========
     {
@@ -419,6 +434,7 @@ const radioStations = [
         timezone: "Europe/London",
         genres: "Sound Art, Experimental, Community, Avant-Garde, Spoken Word, Field Recordings"
     },
+    /*Cannot verify stream:
     {
         name: "Noods Radio",
         url: "https://noodsradio.out.airtime.pro/noodsradio_a",
@@ -426,6 +442,8 @@ const radioStations = [
         timezone: "Europe/London",
         genres: "Underground, Electronic, Post-Punk, Industrial, Techno, Ambient"
     },
+    */
+   /*Cannot verify stream:
     {
         name: "Soho Radio",
         url: "https://s2.radio.co/s2c3cc784b/listen",
@@ -434,6 +452,8 @@ const radioStations = [
         category: "favorite",
         genres: "Eclectic, Electronic, Indie, Soul, Jazz, Community"
     },
+    */
+   /*Cannot verify stream:
     {
         name: "Worldwide FM",
         url: "https://worldwidefm.out.airtime.pro/worldwidefm_a",
@@ -441,6 +461,8 @@ const radioStations = [
         timezone: "Europe/London",
         genres: "Global, Jazz, Soul, Electronic, World"
     },
+    */
+    /*Cannot verify stream:
     {
         name: "Balamii",
         url: "https://balamii.out.airtime.pro/balamii_a",
@@ -448,6 +470,7 @@ const radioStations = [
         timezone: "Europe/London",
         genres: "Grime, UK Bass, Electronic, Club"
     },
+    */
     
     // ========== EUROPE - FRANCE ==========
     {
@@ -462,6 +485,7 @@ const radioStations = [
         url: "https://icecast.radiofrance.fr/fip-hifi.aac",
         city: "Paris",
         timezone: "Europe/Paris",
+        category: "favorite",
         genres: "Eclectic, World, Jazz, Rock, Electronic, Soul"
     },
     {
@@ -553,6 +577,7 @@ const radioStations = [
     },
     
     // ========== EUROPE - NETHERLANDS ==========
+    /*Cannot verify stream:
     {
         name: "Red Light Radio",
         url: "https://redlightradio.out.airtime.pro:8443/redlightradio_a",
@@ -561,6 +586,7 @@ const radioStations = [
         category: "favorite",
         genres: "Underground, Electronic, Disco, House, Experimental"
     },
+    */
     
     // ========== EUROPE - SWITZERLAND ==========
     {
@@ -611,6 +637,7 @@ const radioStations = [
     },
     
     // ========== MIDDLE EAST ==========
+    /*Cannot verify stream:
     {
         name: "Radio Alhara",
         url: "https://n0c.radiojar.com/4xqhqqjtdzzuv?rj-ttl=5",
@@ -619,4 +646,5 @@ const radioStations = [
         category: "favorite",
         genres: "Palestinian, Arabic, Electronic, Talk, Community"
     },
+    */
 ];
