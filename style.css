@@ -23,6 +23,10 @@ h1 {
     text-transform: uppercase;
 }
 
+.favorite-star {
+    color: #FFFF00;
+}
+
 .player-container {
     position: sticky;
     top: 0;
@@ -280,6 +284,22 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.timezone-header {
+    grid-column: 1 / -1;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    color: #888;
+    margin: 20px 0 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #333;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.timezone-header:first-child {
+    margin-top: 0;
 }
 
 /* Styling for the clickable tags under the player */

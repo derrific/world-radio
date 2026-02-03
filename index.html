@@ -16,7 +16,7 @@
 <body>
 
     <div class="player-container">
-        <h1>World Radio!!</h1>
+        <h1>World Radio!</h1>
 
         <div class="current-info">
             <img id="current-image" src="" alt="" style="display: none;">
@@ -31,6 +31,7 @@
 
         <!-- Collapsible Filter Controls (inside player area) -->
         <div class="filter-toggles">
+            <button id="toggle-favorites" class="filter-toggle-btn">★ Favorites</button>
             <button id="toggle-genres" class="filter-toggle-btn">Show Genres ▼</button>
             <button id="toggle-timezones" class="filter-toggle-btn">Show Timezones ▼</button>
             <button id="clear-btn" class="clear-btn" style="display: none;">Clear Filters</button>
@@ -52,7 +53,7 @@
         <span class="sort-label">Sort by:</span>
         <button id="sort-alpha" class="sort-btn active">A-Z</button>
         <button id="sort-city" class="sort-btn">City A-Z</button>
-        <button id="sort-geo" class="sort-btn">Geographic (NYC East)</button>
+        <button id="sort-geo" class="sort-btn">West → East</button>
     </div>
 
     <div id="station-grid" class="station-grid">
@@ -60,9 +61,9 @@
     
     <div class="footer-links">
         <p>Stream Tools:</p>
-        <a href="https://fmstream.org/index.php?s=wbez" target="_blank">FMStream</a>
+        <a href="https://fmstream.org" target="_blank">FMStream</a>
         <span>•</span>
-        <a href="https://streamurl.link/station/wnyc-s-new-standards/" target="_blank">StreamURL</a>
+        <a href="https://streamurl.link" target="_blank">StreamURL</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>

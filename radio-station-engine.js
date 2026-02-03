@@ -1,3 +1,55 @@
+/*
+TIMEZONE REFERENCE (use these exact codes for future stations):
+
+North America: 
+    America/New_York (Eastern)
+    America/Chicago (Central)
+    America/Denver (Mountain)
+    America/Los_Angeles (Pacific)
+    America/Toronto
+    America/Vancouver
+    America/Edmonton
+
+South America: 
+    America/Sao_Paulo
+    America/Recife
+    America/Buenos_Aires
+    America/Lima
+    America/Bogota
+    America/Santiago
+
+Europe: 
+    Europe/London (UK)
+    Europe/Lisbon (Portugal)
+    Europe/Paris (Central European)
+    Europe/Berlin (Central European)
+    Europe/Amsterdam (Central European)
+    Europe/Brussels (Central European)
+    Europe/Zurich (Central European)
+    Europe/Rome (Central European)
+    Europe/Madrid (Central European)
+
+Middle East: 
+    Asia/Jerusalem
+    Asia/Dubai
+
+Asia: 
+    Asia/Tokyo
+    Asia/Seoul
+    Asia/Shanghai
+    Asia/Hong_Kong
+    Asia/Singapore
+    Asia/Kolkata
+
+Australia/Pacific: 
+    Australia/Sydney
+    Australia/Melbourne
+    Australia/Perth
+    Pacific/Auckland
+
+Full list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+*/
+
 const radioStations = [
     // ========== NORTH AMERICA - EAST ==========
     {
