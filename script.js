@@ -238,10 +238,43 @@ async function playStation(station) {
 function setupAudioListeners(audio, station) {
     let hasPlayedOnce = false;
 
-    // 2. SUCCESS: The feed is actually playing audio
+    // 1. PLAYING: The feed is actually playing audio
     audio.addEventListener('playing', () => {
-        hasPlayedOnce = true; // Mark that we've successfully connected
+        hasPlayedOnce = true;
         
+        // --- NEW: Update Tab Title ---
+        document.title = `▶ ${station.name}`;
+        
+        // --- NEW: Update Lock Screen / Control Center ---
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: station.name,
+                artist: station.city,
+                artwork: [
+                    { src: station.image, sizes: '512x512', type: 'image/webp' }
+                ]
+            });
+            
+            // Handle Lock Screen "Play" button (if they paused and want to resume)
+            navigator.mediaSession.setActionHandler('play', () => {
+                audio.play();
+            });
+            
+            // Handle Lock Screen "Pause" button
+            navigator.mediaSession.setActionHandler('pause', () => {
+                // We use your existing stop function or just pause the audio
+                if (typeof stopPlayback === 'function') {
+                    stopPlayback(); 
+                } else {
+                    audio.pause();
+                }
+            });
+            
+            navigator.mediaSession.setActionHandler('stop', () => {
+                if (typeof stopPlayback === 'function') stopPlayback();
+            });
+        }
+
         // Restore Normal UI
         currentStation.className = ""; 
         currentStation.textContent = station.name;
@@ -274,10 +307,17 @@ function setupAudioListeners(audio, station) {
         currentImage.style.display = 'block';
     });
 
+    // 2. PAUSE/END: Reset the Tab Title
+    audio.addEventListener('pause', () => {
+        document.title = "World Radio";
+    });
+    
+    audio.addEventListener('ended', () => {
+        document.title = "World Radio";
+    });
+
     // 3. BUFFERING: Feed is connected but empty/loading
     audio.addEventListener('waiting', () => {
-        // Only show "Buffering" if we have already started playing at least once.
-        // Otherwise, keep showing "Connecting..." which is cleaner for the user.
         if (hasPlayedOnce) {
             currentStation.className = "status-message";
             currentStation.innerHTML = `Buffering<span class="loading-dots"></span>`;
@@ -286,6 +326,7 @@ function setupAudioListeners(audio, station) {
     
     // 4. ERROR: Feed died or refused connection
     audio.addEventListener('error', (e) => {
+        document.title = "Error - World Radio"; // Update tab on error
         let msg = "Unknown Error";
         if (audio.error) {
             switch (audio.error.code) {
