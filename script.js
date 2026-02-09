@@ -829,18 +829,38 @@ function renderGuide() {
     guideContent.appendChild(scrollContainer);
 }
 
+// REAL DATA FETCHING
 async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
+    
+    // 1. CHECK: Do we have a real scraper for this station?
+    if (station.guideId === 'wkcr') {
+        try {
+            // Call our new Netlify Function
+            const response = await fetch(`/api/guide?station=wkcr`);
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+                // Render the REAL shows
+                data.forEach(show => {
+                    renderShowCard(show, station, rowContainer, guideStartUTC);
+                });
+                return; // Exit successfully
+            }
+        } catch (e) {
+            console.error("Guide fetch failed:", e);
+            // Fallback to mock data if error
+        }
+    }
+
+    // 2. FALLBACK: Mock Data (for everyone else)
     // Simulate delay
     await new Promise(r => setTimeout(r, Math.random() * 500));
 
-    // MOCK DATA
     const shows = [];
     let currentOffsetHours = 0;
-    
     while (currentOffsetHours < GUIDE_HOURS) {
         const duration = 1 + Math.floor(Math.random() * 3); 
         const showStartUTC = guideStartUTC + (currentOffsetHours * 3600000);
-        
         shows.push({
             title: `Show #${Math.floor(Math.random() * 100)}`,
             desc: `A ${duration}-hour program on ${station.name}`,
@@ -849,37 +869,47 @@ async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
         });
         currentOffsetHours += duration;
     }
-
+    
+    // Render Mock Shows
     shows.forEach(show => {
-        const item = document.createElement('div');
-        item.className = 'guide-item';
-        
-        // Calculate Position
-        const minutesFromStart = (show.startUTC - guideStartUTC) / 60000;
-        const leftPos = (minutesFromStart / 60) * PIXELS_PER_HOUR;
-        const width = (show.durationMinutes / 60) * PIXELS_PER_HOUR;
-        
-        // HERE IS THE FIX: Add STICKY_WIDTH to the card position
-        item.style.left = `${STICKY_WIDTH + leftPos}px`;
-        item.style.width = `${width}px`;
-        
-        const dateObj = new Date(show.startUTC);
-        const stationTimeStr = dateObj.toLocaleTimeString('en-US', {
-            timeZone: station.timezone,
-            hour: 'numeric', 
-            minute: '2-digit'
-        });
-
-        item.innerHTML = `
-            <div class="guide-time-text">${stationTimeStr}</div>
-            <div class="guide-show-title">${show.title}</div>
-            <div class="guide-show-desc">${show.desc}</div>
-        `;
-        
-        item.addEventListener('click', () => playStation(station));
-        rowContainer.appendChild(item);
+        renderShowItem(show, station, rowContainer, guideStartUTC);
     });
 }
+
+// Helper to draw the card (Shared by both Real and Mock data)
+function renderShowItem(show, station, rowContainer, guideStartUTC) {
+    // If it's real data, 'start' is the timestamp. If mock, it's 'startUTC'
+    const start = show.start || show.startUTC;
+    const durationMins = show.duration || show.durationMinutes;
+
+    const item = document.createElement('div');
+    item.className = 'guide-item';
+    
+    // Calculate Position
+    const minutesFromStart = (start - guideStartUTC) / 60000;
+    const leftPos = (minutesFromStart / 60) * PIXELS_PER_HOUR;
+    const width = (durationMins / 60) * PIXELS_PER_HOUR;
+    
+    item.style.left = `${STICKY_WIDTH + leftPos}px`;
+    item.style.width = `${width}px`;
+    
+    const dateObj = new Date(start);
+    const stationTimeStr = dateObj.toLocaleTimeString('en-US', {
+        timeZone: station.timezone,
+        hour: 'numeric', 
+        minute: '2-digit'
+    });
+
+    item.innerHTML = `
+        <div class="guide-time-text">${stationTimeStr}</div>
+        <div class="guide-show-title">${show.title}</div>
+        <div class="guide-show-desc">${show.desc}</div>
+    `;
+    
+    item.addEventListener('click', () => playStation(station));
+    rowContainer.appendChild(item);
+}
+// Note: I renamed 'renderShowCard' to 'renderShowItem' in the helper to match
 
 // ===== Sort Button Handlers =====
 sortAlphaBtn?.addEventListener('click', () => sortStations('alpha'));
