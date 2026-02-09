@@ -102,6 +102,10 @@ async function fetchStreamFromPlaylist(url) {
 // ===== Stop Playback =====
 function stopPlayback() {
     activePlayId++;
+    
+    // Reset the Tab Title manually
+    document.title = "World Radio";
+
     if (currentAudio) { 
         currentAudio.pause(); 
         currentAudio.removeAttribute('src'); 
@@ -111,6 +115,12 @@ function stopPlayback() {
     if (hls) { hls.destroy(); hls = null; }
     if (metadataInterval) { clearInterval(metadataInterval); metadataInterval = null; }
     
+    // Clear Media Session (Lock Screen)
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = "none";
+        navigator.mediaSession.metadata = null;
+    }
+
     currentStation.textContent = "Select a station";
     currentCity.textContent = "";
     nowPlaying.textContent = "";
