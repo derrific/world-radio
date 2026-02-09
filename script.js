@@ -835,45 +835,24 @@ async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
     // 1. CHECK: Do we have a real scraper for this station?
     if (station.guideId === 'wkcr') {
         try {
-            // Call our new Netlify Function
-            const response = await fetch(`/api/guide?station=wkcr`);
+            const response = await fetch(`/.netlify/functions/guide?station=wkcr`);
             const data = await response.json();
             
             if (Array.isArray(data)) {
-                // Render the REAL shows
                 data.forEach(show => {
-                    renderShowCard(show, station, rowContainer, guideStartUTC);
+                    renderShowItem({
+                        title: show.title,
+                        desc: show.desc, // The scraper sends "desc"
+                        start: show.start,
+                        duration: show.duration
+                    }, station, rowContainer, guideStartUTC);
                 });
-                return; // Exit successfully
+                return; 
             }
         } catch (e) {
             console.error("Guide fetch failed:", e);
-            // Fallback to mock data if error
         }
     }
-
-    // 2. FALLBACK: Mock Data (for everyone else)
-    // Simulate delay
-    await new Promise(r => setTimeout(r, Math.random() * 500));
-
-    const shows = [];
-    let currentOffsetHours = 0;
-    while (currentOffsetHours < GUIDE_HOURS) {
-        const duration = 1 + Math.floor(Math.random() * 3); 
-        const showStartUTC = guideStartUTC + (currentOffsetHours * 3600000);
-        shows.push({
-            title: `Show #${Math.floor(Math.random() * 100)}`,
-            desc: `A ${duration}-hour program on ${station.name}`,
-            startUTC: showStartUTC,
-            durationMinutes: duration * 60
-        });
-        currentOffsetHours += duration;
-    }
-    
-    // Render Mock Shows
-    shows.forEach(show => {
-        renderShowItem(show, station, rowContainer, guideStartUTC);
-    });
 }
 
 // Helper to draw the card (Shared by both Real and Mock data)
