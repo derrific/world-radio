@@ -53,6 +53,11 @@ const sortCityBtn = document.getElementById('sort-city');
 const sortGenreBtn = document.getElementById('sort-genre');
 const sortGeoBtn = document.getElementById('sort-geo');
 
+const toggleGuideBtn = document.getElementById('toggle-guide');
+const guideView = document.getElementById('guide-view');
+const guideContent = document.getElementById('guide-content');
+const guideLoading = document.getElementById('guide-loading');
+
 // ===== State =====
 let timeInterval;
 let activeStationTimezone = null;
@@ -531,6 +536,21 @@ function toggleGenreFilter(genreName) {
 function sortStations(mode) {
     currentSortMode = mode;
     
+    // Update button visual states immediately
+    [sortAlphaBtn, sortCityBtn, sortGeoBtn, sortGenreBtn].forEach(btn => btn?.classList.remove('active'));
+    if (mode === 'alpha') sortAlphaBtn?.classList.add('active');
+    else if (mode === 'city') sortCityBtn?.classList.add('active');
+    else if (mode === 'geo') sortGeoBtn?.classList.add('active');
+    else if (mode === 'genre') sortGenreBtn?.classList.add('active');
+
+    // CHECK: Are we looking at the Guide?
+    if (guideView.style.display !== 'none') {
+        // If Guide is open, just re-render it (it handles its own sorting now)
+        renderGuide();
+        return; 
+    }
+
+    // Otherwise, Standard Grid Sorting Logic...
     let sorted;
     let showTimezoneHeaders = false;
     let showGenreHeaders = false;
@@ -550,16 +570,12 @@ function sortStations(mode) {
         });
     } else if (mode === 'genre') {
         showGenreHeaders = true;
-        // Collect all unique genres, sorted alphabetically
         const allGenres = new Set();
         stationsWithImages.forEach(s => {
-            if (s.genres) {
-                s.genres.split(',').forEach(g => allGenres.add(g.trim()));
-            }
+            if (s.genres) s.genres.split(',').forEach(g => allGenres.add(g.trim()));
         });
         const sortedGenres = Array.from(allGenres).sort((a, b) => a.localeCompare(b));
         
-        // Build array with stations repeated under each genre
         sorted = [];
         sortedGenres.forEach(genre => {
             const stationsInGenre = stationsWithImages
@@ -572,13 +588,6 @@ function sortStations(mode) {
     }
     
     renderStationGrid(sorted, showTimezoneHeaders, showGenreHeaders);
-    
-    // Update button states
-    [sortAlphaBtn, sortCityBtn, sortGeoBtn, sortGenreBtn].forEach(btn => btn.classList.remove('active'));
-    if (mode === 'alpha') sortAlphaBtn.classList.add('active');
-    else if (mode === 'city') sortCityBtn.classList.add('active');
-    else if (mode === 'geo') sortGeoBtn.classList.add('active');
-    else if (mode === 'genre') sortGenreBtn.classList.add('active');
 }
 
 function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeaders = false) {
@@ -625,9 +634,11 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
         div.dataset.genres = station.genres || "";
         div.dataset.timezone = station.timezone || "";
         div.dataset.category = station.category || "";
+        div.dataset.guide = station.guideId || "";
         
         const isFavorite = station.category === 'favorite';
         const starIcon = isFavorite ? '<span class="favorite-star">★</span> ' : '';
+        const guideIcon = station.guideId ? '<span title="Has Guide" style="font-size:10px; cursor:help"> 📅</span>' : '';
         
         // Clean the URL for display (remove http, www, and trailing slash)
         let displayUrl = '';
@@ -640,7 +651,7 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
 
         div.innerHTML = `
             <img src="${station.image}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-            <p class="station-name">${starIcon}${station.name}</p>
+            <p class="station-name">${starIcon}${station.name}${guideIcon}</p>
             <p class="station-city">${station.city}</p>
             ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} ↗</a>` : ''}
         `;
@@ -679,6 +690,196 @@ clearBtn?.addEventListener('click', () => {
     toggleFavoritesBtn?.classList.remove('active');
     filterStations();
 });
+
+// ===== Radio Guide Logic =====
+const PIXELS_PER_HOUR = 200;
+const GUIDE_HOURS = 24; 
+const STICKY_WIDTH = 80;
+
+toggleGuideBtn?.addEventListener('click', () => {
+    const isVisible = guideView.style.display !== 'none';
+    
+    if (isVisible) {
+        // CLOSING GUIDE
+        guideView.style.display = 'none';
+        stationGrid.style.display = 'grid'; 
+        toggleGuideBtn.classList.remove('active');
+        toggleGuideBtn.textContent = "📅 Radio Guide";
+        
+        // Show Genre Button again
+        if (sortGenreBtn) sortGenreBtn.style.display = 'inline-block';
+        
+        // Re-render grid to be safe (restores previous view)
+        sortStations(currentSortMode);
+    } else {
+        // OPENING GUIDE
+        guideView.style.display = 'block';
+        stationGrid.style.display = 'none'; 
+        toggleGuideBtn.classList.add('active');
+        toggleGuideBtn.textContent = "Close Guide ✖";
+        
+        // Hide Genre Button (Not supported in Guide view)
+        if (sortGenreBtn) sortGenreBtn.style.display = 'none';
+        
+        // Fallback: If we were in Genre mode, switch to Alpha
+        if (currentSortMode === 'genre') {
+            sortStations('alpha'); 
+        } else {
+            renderGuide();
+        }
+    }
+});
+
+function renderGuide() {
+    guideContent.innerHTML = ''; 
+    guideLoading.style.display = 'none';
+
+    // Create Scroll Container
+    const scrollContainer = document.createElement('div');
+    scrollContainer.className = 'guide-scroll-container';
+    
+    // 1. Time Setup
+    const now = new Date();
+    now.setMinutes(0, 0, 0); 
+    const startTimeUTC = now.getTime();
+    const totalWidth = STICKY_WIDTH + (GUIDE_HOURS * PIXELS_PER_HOUR);
+
+    // 2. Render Header
+    const headerRow = document.createElement('div');
+    headerRow.className = 'guide-time-header';
+    headerRow.style.width = `${totalWidth}px`;
+    
+    const stickyCorner = document.createElement('div');
+    stickyCorner.className = 'guide-station-sticky'; 
+    stickyCorner.style.height = '30px'; 
+    stickyCorner.style.background = '#1a1a1a';
+    stickyCorner.style.zIndex = '40'; 
+    stickyCorner.style.borderBottom = 'none';
+    stickyCorner.innerHTML = ''; 
+    headerRow.appendChild(stickyCorner);
+    
+    for (let i = 0; i < GUIDE_HOURS; i++) {
+        const hourTime = new Date(startTimeUTC + (i * 3600000));
+        const marker = document.createElement('div');
+        marker.className = 'guide-time-marker';
+        marker.style.left = `${STICKY_WIDTH + (i * PIXELS_PER_HOUR)}px`; 
+        marker.textContent = hourTime.toLocaleTimeString([], {hour: 'numeric', hour12: true}); 
+        headerRow.appendChild(marker);
+    }
+    scrollContainer.appendChild(headerRow);
+
+    // 3. Prepare & SORT Stations
+    let guideStations = radioStations.filter(s => s.guideId);
+
+    // --- Apply Sorting to Guide Rows ---
+    if (currentSortMode === 'alpha') {
+        guideStations.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (currentSortMode === 'city') {
+        guideStations.sort((a, b) => a.city.localeCompare(b.city));
+    } else if (currentSortMode === 'geo') {
+        guideStations.sort((a, b) => {
+            const now = new Date();
+            const offsetA = new Date(now.toLocaleString('en-US', { timeZone: a.timezone })).getTime();
+            const offsetB = new Date(now.toLocaleString('en-US', { timeZone: b.timezone })).getTime();
+            if (offsetA !== offsetB) return offsetA - offsetB;
+            return a.city.localeCompare(b.city);
+        });
+    }
+
+    console.log(`Rendering Guide in mode: ${currentSortMode}`);
+    console.log("Station Order:", guideStations.map(s => s.name));
+
+    // 4. Render Rows
+    const realNow = new Date();
+    const minutesOffset = (realNow.getTime() - startTimeUTC) / 60000;
+
+    if (minutesOffset >= 0) {
+        const nowPixels = (minutesOffset / 60) * PIXELS_PER_HOUR;
+        const nowLine = document.createElement('div');
+        nowLine.className = 'current-time-line';
+        nowLine.style.left = `${STICKY_WIDTH + nowPixels}px`;
+        nowLine.style.zIndex = '15'; 
+        nowLine.style.height = `${30 + (guideStations.length * 80)}px`; 
+        scrollContainer.appendChild(nowLine);
+    }
+
+    guideStations.forEach(station => {
+        const row = document.createElement('div');
+        row.className = 'guide-row';
+        row.style.width = `${totalWidth}px`;
+
+        // Sticky Left Column (Updated with City)
+        const sticky = document.createElement('div');
+        sticky.className = 'guide-station-sticky';
+        const imgPath = station.image || `radio-images/${station.imageFilename || station.name}.webp`;
+        
+        // --- NEW: Added City Div ---
+        sticky.innerHTML = `
+            <img src="${imgPath}" class="guide-station-img">
+            <div class="guide-station-name">${station.name}</div>
+            <div class="guide-station-city">${station.city}</div>
+        `;
+        sticky.addEventListener('click', () => playStation(station));
+        row.appendChild(sticky);
+
+        fetchScheduleForStation(station, row, startTimeUTC);
+        scrollContainer.appendChild(row);
+    });
+
+    guideContent.appendChild(scrollContainer);
+}
+
+async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
+    // Simulate delay
+    await new Promise(r => setTimeout(r, Math.random() * 500));
+
+    // MOCK DATA
+    const shows = [];
+    let currentOffsetHours = 0;
+    
+    while (currentOffsetHours < GUIDE_HOURS) {
+        const duration = 1 + Math.floor(Math.random() * 3); 
+        const showStartUTC = guideStartUTC + (currentOffsetHours * 3600000);
+        
+        shows.push({
+            title: `Show #${Math.floor(Math.random() * 100)}`,
+            desc: `A ${duration}-hour program on ${station.name}`,
+            startUTC: showStartUTC,
+            durationMinutes: duration * 60
+        });
+        currentOffsetHours += duration;
+    }
+
+    shows.forEach(show => {
+        const item = document.createElement('div');
+        item.className = 'guide-item';
+        
+        // Calculate Position
+        const minutesFromStart = (show.startUTC - guideStartUTC) / 60000;
+        const leftPos = (minutesFromStart / 60) * PIXELS_PER_HOUR;
+        const width = (show.durationMinutes / 60) * PIXELS_PER_HOUR;
+        
+        // HERE IS THE FIX: Add STICKY_WIDTH to the card position
+        item.style.left = `${STICKY_WIDTH + leftPos}px`;
+        item.style.width = `${width}px`;
+        
+        const dateObj = new Date(show.startUTC);
+        const stationTimeStr = dateObj.toLocaleTimeString('en-US', {
+            timeZone: station.timezone,
+            hour: 'numeric', 
+            minute: '2-digit'
+        });
+
+        item.innerHTML = `
+            <div class="guide-time-text">${stationTimeStr}</div>
+            <div class="guide-show-title">${show.title}</div>
+            <div class="guide-show-desc">${show.desc}</div>
+        `;
+        
+        item.addEventListener('click', () => playStation(station));
+        rowContainer.appendChild(item);
+    });
+}
 
 // ===== Sort Button Handlers =====
 sortAlphaBtn?.addEventListener('click', () => sortStations('alpha'));

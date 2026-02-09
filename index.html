@@ -35,6 +35,7 @@
         <!-- Collapsible Filter Controls (inside player area) -->
         <div class="filter-toggles">
             <button id="toggle-favorites" class="filter-toggle-btn">★ Favorites</button>
+            <button id="toggle-guide" class="filter-toggle-btn">📅 Radio Guide</button>
             <button id="toggle-genres" class="filter-toggle-btn">Show Genres ▼</button>
             <button id="toggle-timezones" class="filter-toggle-btn">Show Timezones ▼</button>
             <button id="clear-btn" class="clear-btn" style="display: none;">Clear Filters</button>
@@ -58,6 +59,12 @@
         <button id="sort-city" class="sort-btn">City A-Z</button>
         <button id="sort-genre" class="sort-btn">By Genre</button>
         <button id="sort-geo" class="sort-btn">West → East</button>
+    </div>
+
+    <div id="guide-view" class="guide-container" style="display: none;">
+        <div id="guide-loading" class="guide-message">Select a station to see upcoming shows...</div>
+        <div id="guide-content" class="guide-scroll-area">
+            </div>
     </div>
 
     <div id="station-grid" class="station-grid">

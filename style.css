@@ -377,6 +377,143 @@ h1 {
     color: #ff6b6b; /* Red for errors */
 }
 
+/* Radio Guide UI - FIXED */
+.guide-container {
+    width: 100%;
+    margin-bottom: 20px;
+    background: #000;
+    border: 1px solid #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 400px; /* Fixed height window */
+}
+
+/* The box that actually scrolls */
+.guide-scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    position: relative;
+    flex-grow: 1;
+    background: #121212;
+}
+
+/* TOP ROW: Time Markers */
+.guide-time-header {
+    height: 30px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #444;
+    position: relative;
+    /* Width set by JS */
+}
+
+.guide-time-marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #333;
+    color: #888;
+    font-size: 10px;
+    padding-left: 4px;
+    line-height: 30px;
+    white-space: nowrap;
+    pointer-events: none; /* Let clicks pass through */
+}
+
+/* STATION ROWS */
+.guide-row {
+    position: relative;
+    height: 80px; /* Fixed height per station */
+    border-bottom: 1px solid #222;
+    background: #0f0f0f;
+    /* Width set by JS */
+}
+
+/* STICKY LEFT COLUMN (Station Name) */
+.guide-station-sticky {
+    position: sticky;
+    left: 0;
+    width: 80px;
+    min-width: 80px; /* Force width */
+    height: 80px;
+    background: #1a1a1a; /* Opaque background is crucial! */
+    border-right: 1px solid #444;
+    z-index: 20; /* floats ABOVE the cards */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+}
+
+.guide-station-city {
+    font-size: 8px;
+    color: #888;
+    margin-top: 2px;
+    text-align: center;
+    line-height: 1.1;
+    max-width: 70px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.guide-station-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    object-fit: cover;
+    background: #000;
+}
+
+.guide-station-name {
+    font-size: 9px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* PROGRAM CARDS */
+.guide-item {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.guide-item:hover {
+    background: #333;
+    border-color: #4CAF50;
+    z-index: 15;
+}
+
+.guide-time-text { font-size: 10px; color: #4CAF50; margin-bottom: 2px; }
+.guide-show-title { font-size: 11px; color: #fff; font-weight: bold; line-height: 1.1; }
+.guide-show-desc { font-size: 9px; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* RED LINE (Now) */
+.current-time-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #d32f2f;
+    z-index: 30; /* Above everything */
+    pointer-events: none;
+}
+
+/*End of Radio Guide UI*/
+
 /* Footer Links */
 .footer-links {
     margin: 40px 0 20px;
