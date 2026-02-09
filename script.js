@@ -1,3 +1,37 @@
+/*
+    STATUS MESSAGE DECODER RING
+    ===========================
+    These are the messages displayed in the player #current-station element.
+    
+    1. "Connecting: [Station] . .. ..." (White/Standard)
+       - The initial state. The user clicked, the old player was destroyed, 
+       - and we are attempting to handshake with the new server.
+       
+    2. "Resolving Playlist . .. ..." (White/Standard)
+       - Specific to .m3u or .pls files. We are fetching a text file first 
+       - to find the real mp3 stream URL inside it.
+       
+    3. "[Station Name]" (Standard UI + Album Art)
+       - SUCCESS. The 'playing' event has fired. Audio is audible.
+       
+    4. "Buffering . .. ..." (Orange)
+       - The 'waiting' event fired AFTER playback had already started.
+       - The connection is alive, but the internet is too slow to keep up.
+       
+    5. "Network Error (404/Offline)" (Red)
+       - The server is down, the URL is wrong, or the stream is offline.
+       
+    6. "Format Not Supported / 404" (Red)
+       - Browser Error Code 4. The browser connected but doesn't understand 
+       - the audio format (e.g., WMA), or the file doesn't exist.
+       
+    7. "Media Decode Error" (Red)
+       - Browser Error Code 3. The stream data is corrupt.
+       
+    8. "Autoplay Blocked" (Red)
+       - The browser refused to play audio without a direct user gesture.
+*/
+
 // ===== DOM Elements =====
 const stationGrid = document.getElementById('station-grid');
 const currentStation = document.getElementById('current-station');
@@ -112,6 +146,18 @@ async function playStation(station) {
     currentStationData = station;
     let playUrl = station.url;
     
+    // 1. SET LOADING STATE UI
+    // Hide the normal "happy" UI elements
+    currentImage.style.display = 'none';
+    currentCity.style.display = 'none';
+    currentTime.style.display = 'none';
+    currentGenres.style.display = 'none';
+    nowPlaying.style.display = 'none';
+    
+    // Show the "working" UI
+    currentStation.innerHTML = `Connecting: ${station.name}<span class="loading-dots"></span>`;
+    currentStation.className = "status-message"; // Temporarily use status styling
+    
     // Kill previous players
     if (currentAudio) { 
         currentAudio.pause(); 
@@ -122,27 +168,30 @@ async function playStation(station) {
     if (hls) { hls.destroy(); hls = null; }
     if (metadataInterval) { clearInterval(metadataInterval); metadataInterval = null; }
     
-    nowPlaying.textContent = "";
-    nowPlaying.style.display = "none";
-    
-    // Resolve M3U/PLS (but not m3u8)
+    // Resolve M3U/PLS
     if ((playUrl.includes('.m3u') || playUrl.includes('.pls')) && !playUrl.includes('.m3u8')) {
+        currentStation.innerHTML = `Resolving Playlist<span class="loading-dots"></span>`;
         playUrl = await fetchStreamFromPlaylist(playUrl);
     }
     if (myPlayId !== activePlayId) return;
     
     const isHLS = playUrl.includes('.m3u8');
     
+    currentAudio = new Audio();
+    
+    // Attach Event Listeners for Status Updates
+    setupAudioListeners(currentAudio, station);
+
     // Use HLS.js for m3u8 streams
     if (isHLS && Hls.isSupported()) {
         console.log("Using HLS.js for:", playUrl);
         hls = new Hls();
         hls.loadSource(playUrl);
-        currentAudio = new Audio();
         hls.attachMedia(currentAudio);
         
         hls.on(Hls.Events.FRAG_PARSING_METADATA, (event, data) => {
-            if (data.samples) {
+             // ... existing metadata logic ...
+             if (data.samples) {
                 data.samples.forEach(sample => {
                     let str = "";
                     for (let i = 0; i < sample.data.length; i++) {
@@ -160,53 +209,104 @@ async function playStation(station) {
         
         hls.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
-                hls.destroy(); hls = null;
-                currentAudio.src = playUrl;
-                currentAudio.play().catch(e => console.error("HLS Fallback failed:", e));
+                // Try to explain the HLS error
+                let errorMsg = "Stream Error";
+                if (data.type === Hls.ErrorTypes.NETWORK_ERROR) errorMsg = "Network Error (404/Offline)";
+                else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) errorMsg = "Media Decode Error";
+                else errorMsg = "Fatal Stream Error";
+                
+                showErrorState(station, errorMsg);
+                hls.destroy(); 
             }
         });
         
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
             if (myPlayId === activePlayId) {
-                currentAudio.play().catch(e => console.error("HLS Play failed:", e));
+                currentAudio.play().catch(e => showErrorState(station, "Autoplay Blocked"));
             }
         });
-        startMetadataPolling(playUrl, station);
     } else {
-        playWithStandardAudio(playUrl, myPlayId);
+        // Standard Audio
+        currentAudio.src = playUrl;
+        currentAudio.play().catch(e => showErrorState(station, "Autoplay Blocked"));
     }
     
-    // UI Updates
-    currentStation.textContent = station.name;
-    currentCity.textContent = station.city;
-    currentGenres.innerHTML = '';
-    if (station.genres) {
-        station.genres.split(',').forEach(g => {
-            const genreName = g.trim();
-            const span = document.createElement('span');
-            span.textContent = genreName;
-            span.className = 'genre-tag';
-            span.addEventListener('click', () => toggleGenreFilter(genreName));
-            currentGenres.appendChild(span);
-            currentGenres.appendChild(document.createTextNode(' '));
-        });
-    }
-    
-    currentImage.src = station.image;
-    currentImage.style.display = 'block';
-    
-    activeStationTimezone = station.timezone;
-    updateTime();
-    if (timeInterval) clearInterval(timeInterval);
-    timeInterval = setInterval(updateTime, 1000);
+    // Start Metadata (UI will show it only after playing starts)
+    startMetadataPolling(playUrl, station);
 }
 
-function playWithStandardAudio(playUrl, myPlayId) {
-    console.log("Using standard audio for:", playUrl);
-    currentAudio = new Audio();
-    currentAudio.src = playUrl;
-    currentAudio.play().catch(e => console.error("Playback failed:", e));
-    startMetadataPolling(playUrl, currentStationData);
+function setupAudioListeners(audio, station) {
+    let hasPlayedOnce = false;
+
+    // 2. SUCCESS: The feed is actually playing audio
+    audio.addEventListener('playing', () => {
+        hasPlayedOnce = true; // Mark that we've successfully connected
+        
+        // Restore Normal UI
+        currentStation.className = ""; 
+        currentStation.textContent = station.name;
+        
+        currentCity.textContent = station.city;
+        currentCity.style.display = 'block';
+        
+        activeStationTimezone = station.timezone;
+        updateTime();
+        if (timeInterval) clearInterval(timeInterval);
+        timeInterval = setInterval(updateTime, 1000);
+        currentTime.style.display = 'block';
+
+        // Re-build genres
+        currentGenres.innerHTML = '';
+        if (station.genres) {
+            station.genres.split(',').forEach(g => {
+                const genreName = g.trim();
+                const span = document.createElement('span');
+                span.textContent = genreName;
+                span.className = 'genre-tag';
+                span.addEventListener('click', () => toggleGenreFilter(genreName));
+                currentGenres.appendChild(span);
+                currentGenres.appendChild(document.createTextNode(' '));
+            });
+        }
+        currentGenres.style.display = 'block';
+        
+        currentImage.src = station.image;
+        currentImage.style.display = 'block';
+    });
+
+    // 3. BUFFERING: Feed is connected but empty/loading
+    audio.addEventListener('waiting', () => {
+        // Only show "Buffering" if we have already started playing at least once.
+        // Otherwise, keep showing "Connecting..." which is cleaner for the user.
+        if (hasPlayedOnce) {
+            currentStation.className = "status-message";
+            currentStation.innerHTML = `Buffering<span class="loading-dots"></span>`;
+        }
+    });
+    
+    // 4. ERROR: Feed died or refused connection
+    audio.addEventListener('error', (e) => {
+        let msg = "Unknown Error";
+        if (audio.error) {
+            switch (audio.error.code) {
+                case 1: msg = "Aborted by User"; break;
+                case 2: msg = "Network Error (Decode)"; break;
+                case 3: msg = "Decode Error"; break;
+                case 4: msg = "Format Not Supported / 404"; break;
+            }
+        }
+        showErrorState(station, msg);
+    });
+}
+
+function showErrorState(station, message) {
+    currentStation.className = "status-message error-message";
+    currentStation.textContent = `${message}: ${station.name}`;
+    
+    // Keep other UI elements hidden
+    currentImage.style.display = 'none';
+    currentCity.style.display = 'none';
+    currentTime.style.display = 'none';
 }
 
 function startMetadataPolling(url, station) {
@@ -478,10 +578,20 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
         const isFavorite = station.category === 'favorite';
         const starIcon = isFavorite ? '<span class="favorite-star">★</span> ' : '';
         
+        // Clean the URL for display (remove http, www, and trailing slash)
+        let displayUrl = '';
+        if (station.homepage) {
+            displayUrl = station.homepage
+                .replace(/^https?:\/\//, '')
+                .replace(/^www\./, '')
+                .replace(/\/$/, '');
+        }
+
         div.innerHTML = `
             <img src="${station.image}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
             <p class="station-name">${starIcon}${station.name}</p>
             <p class="station-city">${station.city}</p>
+            ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} ↗</a>` : ''}
         `;
         div.addEventListener('click', () => playStation(station));
         stationGrid.appendChild(div);
@@ -538,7 +648,7 @@ function init() {
     currentImage?.addEventListener('click', stopPlayback);
     
     // Initial sort and render
-    sortStations('alpha');
+    sortStations('geo'); 
 }
 
 init();

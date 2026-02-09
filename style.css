@@ -329,6 +329,54 @@ h1 {
     max-width: 300px;
 }
 
+/* Homepage Link Styling */
+.station-homepage {
+    font-size: 10px;
+    color: #666;
+    text-decoration: none;
+    margin-top: 8px;
+    display: block;       /* Allows text-align to work on the container */
+    text-align: right;    /* Pushes text to the right */
+    transition: all 0.2s;
+    opacity: 0.7;
+}
+
+.station-homepage:hover {
+    color: #4CAF50;
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Loading Animation */
+.loading-dots::after {
+    display: inline-block;
+    animation: ellipsis 1.5s infinite;
+    content: ".";
+    width: 1em;
+    text-align: left;
+}
+
+@keyframes ellipsis {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+}
+
+/* Status Message Styling */
+.status-message {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #ffb74d; /* Orange for buffering/loading */
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.error-message {
+    color: #ff6b6b; /* Red for errors */
+}
+
 /* Footer Links */
 .footer-links {
     margin: 40px 0 20px;
