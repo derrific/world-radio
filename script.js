@@ -842,9 +842,10 @@ async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
                 data.forEach(show => {
                     renderShowItem({
                         title: show.title,
-                        desc: show.desc, // The scraper sends "desc"
+                        desc: show.desc,
                         start: show.start,
-                        duration: show.duration
+                        duration: show.duration,
+                        url: show.url // <--- THIS WAS MISSING!
                     }, station, rowContainer, guideStartUTC);
                 });
                 return; 
@@ -855,14 +856,16 @@ async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
     }
 }
 
-// Helper to draw the card (Shared by both Real and Mock data)
+// Helper to draw the card
 function renderShowItem(show, station, rowContainer, guideStartUTC) {
-    // If it's real data, 'start' is the timestamp. If mock, it's 'startUTC'
     const start = show.start || show.startUTC;
     const durationMins = show.duration || show.durationMinutes;
 
     const item = document.createElement('div');
     item.className = 'guide-item';
+    
+    // Add a visual cue that this is a link (optional, but good for UX)
+    item.title = "Click to view show info"; 
     
     // Calculate Position
     const minutesFromStart = (start - guideStartUTC) / 60000;
@@ -881,11 +884,22 @@ function renderShowItem(show, station, rowContainer, guideStartUTC) {
 
     item.innerHTML = `
         <div class="guide-time-text">${stationTimeStr}</div>
-        <div class="guide-show-title">${show.title}</div>
+        <div class="guide-show-title">${show.title} <span style="font-size:10px">↗</span></div>
         <div class="guide-show-desc">${show.desc}</div>
     `;
     
-    item.addEventListener('click', () => playStation(station));
+    // --- UPDATED CLICK BEHAVIOR ---
+    item.addEventListener('click', (e) => {
+        e.stopPropagation(); // Stop the click from bubbling up
+        if (show.url) {
+            window.open(show.url, '_blank'); // Open Spinitron page
+        } else {
+            // Fallback if no URL: just play the station? Or do nothing?
+            // Let's play the station as a fallback, or you can remove this line.
+            playStation(station); 
+        }
+    });
+    
     rowContainer.appendChild(item);
 }
 // Note: I renamed 'renderShowCard' to 'renderShowItem' in the helper to match

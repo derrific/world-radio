@@ -6,3 +6,6 @@
 
 # Ignore local environment files (if we add them later)
 .env
+
+# Dependencies (The Big Folder)
+node_modules/
