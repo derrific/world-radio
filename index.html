@@ -36,6 +36,7 @@
         <div class="filter-toggles">
             <button id="toggle-favorites" class="filter-toggle-btn">★ Favorites</button>
             <button id="toggle-guide" class="filter-toggle-btn">📅 Radio Guide</button>
+            <button id="toggle-history" class="filter-toggle-btn">📜 History</button>
             <button id="toggle-genres" class="filter-toggle-btn">Show Genres ▼</button>
             <button id="toggle-timezones" class="filter-toggle-btn">Show Timezones ▼</button>
             <button id="clear-btn" class="clear-btn" style="display: none;">Clear Filters</button>
@@ -67,6 +68,16 @@
             </div>
     </div>
 
+    <div id="history-view" class="guide-container" style="display: none;">
+        <div class="history-header" style="display: flex; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid #333; background: #1a1a1a;">
+            <h2 style="font-size: 14px; margin: 0; line-height: 24px;">🎧 Listening History</h2>
+            <button id="refresh-history" class="sort-btn">Refresh</button>
+        </div>
+        <div id="history-content" class="guide-scroll-area" style="padding: 10px;">
+            <div style="color: #666; font-size: 12px; text-align: center; padding: 20px;">Loading history...</div>
+        </div>
+    </div>
+
     <div id="station-grid" class="station-grid">
     </div>
     
@@ -77,8 +88,9 @@
         <a href="https://streamurl.link" target="_blank">StreamURL</a>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
+    
     <script src="radio-station-engine.js"></script>
     <script src="script.js"></script>
 </body>

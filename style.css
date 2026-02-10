@@ -597,37 +597,187 @@ h1 {
     }
 }
 
+/* HISTORY POPUP STYLES */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #222;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+}
+
+.history-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:hover {
+    background: #1a1a1a;
+}
+
+.h-station { font-weight: bold; color: #fff; display: block; }
+.h-meta { font-size: 0.8rem; color: #888; margin-top: 2px; }
+.h-duration { font-family: monospace; color: #4CAF50; font-size: 0.9rem; }
+
+/* Mobile tweak for history */
+@media (max-width: 768px) {
+    .h-meta { font-size: 0.7rem; }
+}
+
 /* =========================================
-   MOBILE LAYOUT FIXES
+   GLOBAL TIME FORMATTING
+   (Applies to both Desktop and Mobile)
+   ========================================= */
+
+/* Add the dot separator between Date and Time */
+.t-date::after {
+    content: " • ";
+    margin: 0 5px;
+    opacity: 0.6;
+}
+
+/* Ensure the time text looks nice and aligned */
+.t-date, .t-time {
+    display: inline-block;
+}
+
+/* =========================================
+   MOBILE LAYOUT FIXES (FINAL V10 - HEIGHT KILLER)
    (Only applies to screens smaller than 768px)
    ========================================= */
 @media (max-width: 768px) {
-    
-    /* 1. Force the image to be small (max 25% of screen height) */
+
+    /* 1. PLAYER CONTAINER */
+    header, .player-container {
+        padding: 4px 0 !important; 
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        gap: 0 !important; 
+        min-height: 0 !important; /* <--- CRITICAL FIX */
+        height: auto !important;
+    }
+
+    /* 2. INFO CONTAINER (The Ghost Box) */
+    .current-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        
+        /* Force the box to collapse to its content size */
+        min-height: 0 !important; 
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .current-text {
+        display: block !important;
+        min-height: 0 !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* 3. TINY IMAGE */
     #current-image {
-        max-height: 20vh !important; 
+        min-height: 0 !important;
+        background: transparent !important;
+    }
+    
+    #current-image:not([src]), 
+    #current-image[src=""],
+    #current-image[src="about:blank"] {
+        display: none !important;
+        border: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+    }
+    
+    #current-image {
+        max-height: 8vh !important;
         width: auto !important;
-        margin: 0 auto 10px auto; /* Center it */
+        margin: 0 auto 2px auto !important;
+        display: block;
     }
 
-    /* 2. Shrink the big text so it fits */
+    /* 4. STATION TITLE */
+    h1 { display: none; }
+    
     #current-station {
-        font-size: 1.5rem !important; /* Smaller title */
-        margin-bottom: 5px;
+        font-size: 1.1rem !important; 
+        margin: 0 0 2px 0 !important;
+        line-height: 1.1;
+        display: block;
     }
 
-    /* 3. Compact the city and time info */
-    #current-city, #current-time, #now-playing {
-        font-size: 0.9rem !important;
-        margin-bottom: 2px;
+    /* 5. METADATA LINE */
+    #current-city:empty, 
+    #current-time:empty, 
+    #now-playing:empty {
+        display: none !important;
     }
 
-    /* 4. Reduce padding around the whole top section to save space */
-    /* (Note: Adjust '.top-section' to whatever your main top div class is, 
-       often 'header' or '.player-container') */
-    header, .player-container { 
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-        min-height: auto !important;
+    #current-city, 
+    #current-time, 
+    #now-playing,
+    .t-date,
+    .t-time {
+        display: inline !important; 
+        font-size: 0.7rem !important; 
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+    }
+
+    #current-city:not(:empty)::after {
+        content: " • ";
+        opacity: 0.6;
+        margin: 0 3px;
+    }
+    .t-date:not(:empty)::after {
+        content: " • ";
+        opacity: 0.6;
+        margin: 0 3px;
+    }
+
+    /* 6. GENRES (The Bottom Element) */
+    #current-genres {
+        display: block !important;
+        font-size: 0.6rem !important;
+        margin: 2px 0 0 0 !important; /* Zero bottom margin */
+        padding: 0 !important;
+        line-height: 1;
+        opacity: 0.9;
+    }
+    
+    .genre-tag {
+        padding: 1px 5px !important;
+        margin: 1px !important;
+    }
+
+    /* 7. BUTTON CONTAINER (The Top Element of the next section) */
+    .filter-toggles {
+        margin-top: 2px !important; /* Minimal gap */
+        padding-top: 0 !important;
+        display: block !important;
+        text-align: center;
+    }
+
+    .filter-toggles button {
+        font-size: 1rem !important;
+        padding: 4px 8px !important;
+        margin: 2px !important;
+        line-height: 1;
+        height: auto !important;
     }
 }

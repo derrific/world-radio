@@ -32,6 +32,79 @@
        - The browser refused to play audio without a direct user gesture.
 */
 
+// ===== SUPABASE SETUP =====
+// âš ï¸  Replace these with your REAL credentials from:
+//     Supabase Dashboard â†’ Project Settings â†’ API
+//     - Project URL looks like: https://abcdefghijkl.supabase.co
+//     - Anon key is a long JWT starting with: eyJ...
+const SB_URL = 'https://AAcf684e0n8UTuPCyY2wgA.supabase.co';
+const SB_KEY = 'sb_publishable_AAcf684e0n8UTuPCyY2wgA_GUf4oQXZ';
+
+let supabaseClient = null;
+try {
+    if (window.supabase && window.supabase.createClient) {
+        supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
+        console.log("âœ… Supabase connected");
+    } else {
+        console.warn("âš ï¸ Supabase SDK not loaded â€” history/tracking disabled");
+    }
+} catch (e) {
+    console.warn("âš ï¸ Supabase init failed â€” history/tracking disabled:", e);
+}
+
+// ===== SESSION TRACKING =====
+let sessionStartTime = null;
+let currentListenerCity = "Unknown";
+let sessionStationName = null;
+let sessionStationCity = null;
+
+// 1. Get User Location (Silent & Free)
+async function fetchUserLocation() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.city && data.country_code) {
+            currentListenerCity = `${data.city}, ${data.country_code}`;
+            console.log("ðŸ“ Listener Location:", currentListenerCity);
+        }
+    } catch (e) {
+        console.warn("Could not detect location:", e);
+    }
+}
+fetchUserLocation(); // Run immediately on load
+
+// 2. Save Session to Cloud
+async function saveSession() {
+    if (!sessionStartTime || !sessionStationName) return;
+    if (!supabaseClient) return; // Supabase not available, skip silently
+
+    const endTime = Date.now();
+    const durationSec = Math.round((endTime - sessionStartTime) / 1000);
+
+    // THE 30-SECOND RULE
+    if (durationSec > 30) {
+        console.log(`ðŸ’¾ Saving Session: ${sessionStationName} (${durationSec}s)`);
+        
+        const { error } = await supabaseClient
+            .from('history')
+            .insert({
+                station_name: sessionStationName,
+                station_city: sessionStationCity,
+                listener_city: currentListenerCity,
+                duration_seconds: durationSec,
+                device_type: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+            });
+
+        if (error) console.error("Save Error:", error);
+    } else {
+        console.log(`Too short to save (${durationSec}s)`);
+    }
+
+    // Reset
+    sessionStartTime = null;
+    sessionStationName = null;
+}
+
 // ===== DOM Elements =====
 const stationGrid = document.getElementById('station-grid');
 const currentStation = document.getElementById('current-station');
@@ -83,7 +156,9 @@ function updateTime() {
                 timeZone: activeStationTimezone,
                 hour: 'numeric', minute: '2-digit', second: '2-digit'
             });
-            currentTime.innerHTML = `${datePart}<br>${timePart}`;
+            
+            // Use spans instead of <br> so CSS can arrange them
+            currentTime.innerHTML = `<span class="t-date">${datePart}</span><span class="t-time">${timePart}</span>`;
         } catch (e) {
             currentTime.textContent = "--";
         }
@@ -106,6 +181,7 @@ async function fetchStreamFromPlaylist(url) {
 
 // ===== Stop Playback =====
 function stopPlayback() {
+    saveSession();
     activePlayId++;
     
     // Reset the Tab Title manually
@@ -156,6 +232,15 @@ function handleMetadata(metadata) {
 
 // ===== Play Station =====
 async function playStation(station) {
+    // 1. If we were already playing something, save it first!
+    if (currentAudio && !currentAudio.paused) {
+        saveSession();
+    }
+
+    // 2. Start New Session Tracking
+    sessionStartTime = Date.now();
+    sessionStationName = station.name;
+    sessionStationCity = station.city;
     // (If coming from the Guide, 'station.image' might be missing, causing a crash later)
     if (!station.image) {
         station.image = `radio-images/${station.imageFilename || station.name}.webp`;
@@ -263,7 +348,7 @@ function setupAudioListeners(audio, station) {
         hasPlayedOnce = true;
         
         // --- NEW: Update Tab Title ---
-        document.title = `▶ ${station.name}`;
+        document.title = `â–¶ ${station.name}`;
         
         // --- NEW: Update Lock Screen / Control Center ---
         if ('mediaSession' in navigator) {
@@ -642,8 +727,8 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
         div.dataset.guide = station.guideId || "";
         
         const isFavorite = station.category === 'favorite';
-        const starIcon = isFavorite ? '<span class="favorite-star">★</span> ' : '';
-        const guideIcon = station.guideId ? '<span title="Has Guide" style="font-size:10px; cursor:help"> 📅</span>' : '';
+        const starIcon = isFavorite ? '<span class="favorite-star">â˜…</span> ' : '';
+        const guideIcon = station.guideId ? '<span title="Has Guide" style="font-size:10px; cursor:help"> ðŸ“…</span>' : '';
         
         // Clean the URL for display (remove http, www, and trailing slash)
         let displayUrl = '';
@@ -658,7 +743,7 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
             <img src="${station.image}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
             <p class="station-name">${starIcon}${station.name}${guideIcon}</p>
             <p class="station-city">${station.city}</p>
-            ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} ↗</a>` : ''}
+            ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} â†—</a>` : ''}
         `;
         div.addEventListener('click', () => playStation(station));
         stationGrid.appendChild(div);
@@ -672,14 +757,14 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
 toggleGenresBtn?.addEventListener('click', () => {
     const isVisible = genreFilter.style.display !== 'none';
     genreFilter.style.display = isVisible ? 'none' : 'block';
-    toggleGenresBtn.textContent = isVisible ? 'Show Genres ▼' : 'Hide Genres ▲';
+    toggleGenresBtn.textContent = isVisible ? 'Show Genres â–¼' : 'Hide Genres â–²';
     toggleGenresBtn.classList.toggle('active', !isVisible);
 });
 
 toggleTimezonesBtn?.addEventListener('click', () => {
     const isVisible = timezoneFilter.style.display !== 'none';
     timezoneFilter.style.display = isVisible ? 'none' : 'block';
-    toggleTimezonesBtn.textContent = isVisible ? 'Show Timezones ▼' : 'Hide Timezones ▲';
+    toggleTimezonesBtn.textContent = isVisible ? 'Show Timezones â–¼' : 'Hide Timezones â–²';
     toggleTimezonesBtn.classList.toggle('active', !isVisible);
 });
 
@@ -709,7 +794,7 @@ toggleGuideBtn?.addEventListener('click', () => {
         guideView.style.display = 'none';
         stationGrid.style.display = 'grid'; 
         toggleGuideBtn.classList.remove('active');
-        toggleGuideBtn.textContent = "📅 Radio Guide";
+        toggleGuideBtn.textContent = "ðŸ“… Radio Guide";
         
         // Show Genre Button again
         if (sortGenreBtn) sortGenreBtn.style.display = 'inline-block';
@@ -721,7 +806,7 @@ toggleGuideBtn?.addEventListener('click', () => {
         guideView.style.display = 'block';
         stationGrid.style.display = 'none'; 
         toggleGuideBtn.classList.add('active');
-        toggleGuideBtn.textContent = "Close Guide ✖";
+        toggleGuideBtn.textContent = "Close Guide âœ–";
         
         // Hide Genre Button (Not supported in Guide view)
         if (sortGenreBtn) sortGenreBtn.style.display = 'none';
@@ -889,7 +974,7 @@ function renderShowItem(show, station, rowContainer, guideStartUTC) {
 
     item.innerHTML = `
         <div class="guide-time-text">${stationTimeStr}</div>
-        <div class="guide-show-title">${show.title} <span style="font-size:10px">↗</span></div>
+        <div class="guide-show-title">${show.title} <span style="font-size:10px">â†—</span></div>
         <div class="guide-show-desc">${show.desc}</div>
     `;
     
@@ -920,6 +1005,9 @@ function init() {
     createGenreFilter();
     createTimezoneFilter();
     
+    // --- Force image to hide on startup ---
+    if (currentImage) currentImage.style.display = 'none'; 
+
     stationsWithImages = radioStations.map(station => ({
         ...station,
         image: `radio-images/${station.imageFilename || station.name}.webp`
@@ -929,6 +1017,88 @@ function init() {
     
     // Initial sort and render
     sortStations('geo'); 
+}
+
+// ===== HISTORY POPUP LOGIC =====
+const historyView = document.getElementById('history-view');
+const historyContent = document.getElementById('history-content');
+const toggleHistoryBtn = document.getElementById('toggle-history');
+const closeHistoryBtn = document.getElementById('close-history');
+
+// 1. Open History
+if (toggleHistoryBtn) {
+    toggleHistoryBtn.addEventListener('click', async () => {
+        // Toggle the view
+        const isHidden = historyView.style.display === 'none';
+        if (!isHidden) {
+            historyView.style.display = 'none';
+            toggleHistoryBtn.classList.remove('active');
+            return;
+        }
+        
+        // Show the view
+        historyView.style.display = 'block'; 
+        toggleHistoryBtn.classList.add('active');
+        
+        // Fetch Data
+        historyContent.innerHTML = '<div class="guide-message">Loading your diary...</div>';
+        
+        if (!supabaseClient) {
+            historyContent.innerHTML = '<div class="guide-message">History tracking not connected. Check Supabase credentials.</div>';
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('history')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(50); // Get last 50 sessions
+
+        if (error) {
+            historyContent.innerHTML = `<div class="guide-message error-message">Error loading history: ${error.message}</div>`;
+            return;
+        }
+
+        if (!data || data.length === 0) {
+            historyContent.innerHTML = '<div class="guide-message">No listening history yet. Go listen to some tunes!</div>';
+            return;
+        }
+
+        // Render List
+        historyContent.innerHTML = ''; // Clear loading message
+        
+        data.forEach(session => {
+            const date = new Date(session.created_at);
+            const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+            
+            // Format Duration (e.g., "12m 30s")
+            const mins = Math.floor(session.duration_seconds / 60);
+            const secs = session.duration_seconds % 60;
+            const durStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+            const row = document.createElement('div');
+            row.className = 'history-item';
+            row.innerHTML = `
+                <div style="flex-grow:1">
+                    <span class="h-station">${session.station_name}</span>
+                    <div class="h-meta">
+                        ${session.station_city} â€¢ ${dateStr} <br>
+                        <span style="opacity:0.6">Listened from: ${session.listener_city || 'Unknown'}</span>
+                    </div>
+                </div>
+                <div class="h-duration">${durStr}</div>
+            `;
+            historyContent.appendChild(row);
+        });
+    });
+}
+
+// 2. Close History Button
+if (closeHistoryBtn) {
+    closeHistoryBtn.addEventListener('click', () => {
+        historyView.style.display = 'none';
+        toggleHistoryBtn.classList.remove('active');
+    });
 }
 
 init();
