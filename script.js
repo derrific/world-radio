@@ -156,6 +156,11 @@ function handleMetadata(metadata) {
 
 // ===== Play Station =====
 async function playStation(station) {
+    // (If coming from the Guide, 'station.image' might be missing, causing a crash later)
+    if (!station.image) {
+        station.image = `radio-images/${station.imageFilename || station.name}.webp`;
+    }
+
     activePlayId++;
     const myPlayId = activePlayId;
     currentStationData = station;
