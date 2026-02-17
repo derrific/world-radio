@@ -32,79 +32,6 @@
        - The browser refused to play audio without a direct user gesture.
 */
 
-// ===== SUPABASE SETUP =====
-// âš ï¸  Replace these with your REAL credentials from:
-//     Supabase Dashboard â†’ Project Settings â†’ API
-//     - Project URL looks like: https://abcdefghijkl.supabase.co
-//     - Anon key is a long JWT starting with: eyJ...
-const SB_URL = 'https://AAcf684e0n8UTuPCyY2wgA.supabase.co';
-const SB_KEY = 'sb_publishable_AAcf684e0n8UTuPCyY2wgA_GUf4oQXZ';
-
-let supabaseClient = null;
-try {
-    if (window.supabase && window.supabase.createClient) {
-        supabaseClient = window.supabase.createClient(SB_URL, SB_KEY);
-        console.log("âœ… Supabase connected");
-    } else {
-        console.warn("âš ï¸ Supabase SDK not loaded â€” history/tracking disabled");
-    }
-} catch (e) {
-    console.warn("âš ï¸ Supabase init failed â€” history/tracking disabled:", e);
-}
-
-// ===== SESSION TRACKING =====
-let sessionStartTime = null;
-let currentListenerCity = "Unknown";
-let sessionStationName = null;
-let sessionStationCity = null;
-
-// 1. Get User Location (Silent & Free)
-async function fetchUserLocation() {
-    try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data.city && data.country_code) {
-            currentListenerCity = `${data.city}, ${data.country_code}`;
-            console.log("ðŸ“ Listener Location:", currentListenerCity);
-        }
-    } catch (e) {
-        console.warn("Could not detect location:", e);
-    }
-}
-fetchUserLocation(); // Run immediately on load
-
-// 2. Save Session to Cloud
-async function saveSession() {
-    if (!sessionStartTime || !sessionStationName) return;
-    if (!supabaseClient) return; // Supabase not available, skip silently
-
-    const endTime = Date.now();
-    const durationSec = Math.round((endTime - sessionStartTime) / 1000);
-
-    // THE 30-SECOND RULE
-    if (durationSec > 30) {
-        console.log(`ðŸ’¾ Saving Session: ${sessionStationName} (${durationSec}s)`);
-        
-        const { error } = await supabaseClient
-            .from('history')
-            .insert({
-                station_name: sessionStationName,
-                station_city: sessionStationCity,
-                listener_city: currentListenerCity,
-                duration_seconds: durationSec,
-                device_type: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
-            });
-
-        if (error) console.error("Save Error:", error);
-    } else {
-        console.log(`Too short to save (${durationSec}s)`);
-    }
-
-    // Reset
-    sessionStartTime = null;
-    sessionStationName = null;
-}
-
 // ===== DOM Elements =====
 const stationGrid = document.getElementById('station-grid');
 const currentStation = document.getElementById('current-station');
@@ -181,11 +108,10 @@ async function fetchStreamFromPlaylist(url) {
 
 // ===== Stop Playback =====
 function stopPlayback() {
-    saveSession();
     activePlayId++;
     
-    // Reset the Tab Title manually
-    document.title = "World Radio";
+    // Reset the Tab Title
+    document.title = "Radio Derrific";
 
     if (currentAudio) { 
         currentAudio.pause(); 
@@ -232,16 +158,7 @@ function handleMetadata(metadata) {
 
 // ===== Play Station =====
 async function playStation(station) {
-    // 1. If we were already playing something, save it first!
-    if (currentAudio && !currentAudio.paused) {
-        saveSession();
-    }
-
-    // 2. Start New Session Tracking
-    sessionStartTime = Date.now();
-    sessionStationName = station.name;
-    sessionStationCity = station.city;
-    // (If coming from the Guide, 'station.image' might be missing, causing a crash later)
+    // If coming from the Guide, 'station.image' might be missing
     if (!station.image) {
         station.image = `radio-images/${station.imageFilename || station.name}.webp`;
     }
@@ -295,7 +212,6 @@ async function playStation(station) {
         hls.attachMedia(currentAudio);
         
         hls.on(Hls.Events.FRAG_PARSING_METADATA, (event, data) => {
-             // ... existing metadata logic ...
              if (data.samples) {
                 data.samples.forEach(sample => {
                     let str = "";
@@ -314,7 +230,6 @@ async function playStation(station) {
         
         hls.on(Hls.Events.ERROR, (event, data) => {
             if (data.fatal) {
-                // Try to explain the HLS error
                 let errorMsg = "Stream Error";
                 if (data.type === Hls.ErrorTypes.NETWORK_ERROR) errorMsg = "Network Error (404/Offline)";
                 else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) errorMsg = "Media Decode Error";
@@ -347,10 +262,10 @@ function setupAudioListeners(audio, station) {
     audio.addEventListener('playing', () => {
         hasPlayedOnce = true;
         
-        // --- NEW: Update Tab Title ---
-        document.title = `â–¶ ${station.name}`;
+        // Update Tab Title
+        document.title = `\u25B6 ${station.name}`;
         
-        // --- NEW: Update Lock Screen / Control Center ---
+        // Update Lock Screen / Control Center
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: station.name,
@@ -360,14 +275,11 @@ function setupAudioListeners(audio, station) {
                 ]
             });
             
-            // Handle Lock Screen "Play" button (if they paused and want to resume)
             navigator.mediaSession.setActionHandler('play', () => {
                 audio.play();
             });
             
-            // Handle Lock Screen "Pause" button
             navigator.mediaSession.setActionHandler('pause', () => {
-                // We use your existing stop function or just pause the audio
                 if (typeof stopPlayback === 'function') {
                     stopPlayback(); 
                 } else {
@@ -414,11 +326,11 @@ function setupAudioListeners(audio, station) {
 
     // 2. PAUSE/END: Reset the Tab Title
     audio.addEventListener('pause', () => {
-        document.title = "World Radio";
+        document.title = "Radio Derrific";
     });
     
     audio.addEventListener('ended', () => {
-        document.title = "World Radio";
+        document.title = "Radio Derrific";
     });
 
     // 3. BUFFERING: Feed is connected but empty/loading
@@ -431,7 +343,7 @@ function setupAudioListeners(audio, station) {
     
     // 4. ERROR: Feed died or refused connection
     audio.addEventListener('error', (e) => {
-        document.title = "Error - World Radio"; // Update tab on error
+        document.title = "Radio Derrific";
         let msg = "Unknown Error";
         if (audio.error) {
             switch (audio.error.code) {
@@ -461,7 +373,6 @@ function startMetadataPolling(url, station) {
 }
 
 async function checkMetadataMultiple(url, station) {
-    // Try station-specific APIs based on URL patterns
     if (url.includes('radiofrance') || url.includes('fip')) {
         await checkFIPMetadata(url);
     } else if (url.includes('wqxr') || url.includes('wnyc') || url.includes('q2stream')) {
@@ -727,8 +638,8 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
         div.dataset.guide = station.guideId || "";
         
         const isFavorite = station.category === 'favorite';
-        const starIcon = isFavorite ? '<span class="favorite-star">â˜…</span> ' : '';
-        const guideIcon = station.guideId ? '<span title="Has Guide" style="font-size:10px; cursor:help"> ðŸ“…</span>' : '';
+        const starIcon = isFavorite ? '<span class="favorite-star">\u2605</span> ' : '';
+        const guideIcon = station.guideId ? '<span title="Has Guide" style="font-size:10px; cursor:help"> [G]</span>' : '';
         
         // Clean the URL for display (remove http, www, and trailing slash)
         let displayUrl = '';
@@ -743,7 +654,7 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
             <img src="${station.image}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
             <p class="station-name">${starIcon}${station.name}${guideIcon}</p>
             <p class="station-city">${station.city}</p>
-            ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} â†—</a>` : ''}
+            ${station.homepage ? `<a href="${station.homepage}" target="_blank" class="station-homepage" onclick="event.stopPropagation()">${displayUrl} \u2197</a>` : ''}
         `;
         div.addEventListener('click', () => playStation(station));
         stationGrid.appendChild(div);
@@ -757,14 +668,14 @@ function renderStationGrid(stations, showTimezoneHeaders = false, showGenreHeade
 toggleGenresBtn?.addEventListener('click', () => {
     const isVisible = genreFilter.style.display !== 'none';
     genreFilter.style.display = isVisible ? 'none' : 'block';
-    toggleGenresBtn.textContent = isVisible ? 'Show Genres â–¼' : 'Hide Genres â–²';
+    toggleGenresBtn.textContent = isVisible ? 'Show Genres \u25BC' : 'Hide Genres \u25B2';
     toggleGenresBtn.classList.toggle('active', !isVisible);
 });
 
 toggleTimezonesBtn?.addEventListener('click', () => {
     const isVisible = timezoneFilter.style.display !== 'none';
     timezoneFilter.style.display = isVisible ? 'none' : 'block';
-    toggleTimezonesBtn.textContent = isVisible ? 'Show Timezones â–¼' : 'Hide Timezones â–²';
+    toggleTimezonesBtn.textContent = isVisible ? 'Show Timezones \u25BC' : 'Hide Timezones \u25B2';
     toggleTimezonesBtn.classList.toggle('active', !isVisible);
 });
 
@@ -794,7 +705,7 @@ toggleGuideBtn?.addEventListener('click', () => {
         guideView.style.display = 'none';
         stationGrid.style.display = 'grid'; 
         toggleGuideBtn.classList.remove('active');
-        toggleGuideBtn.textContent = "ðŸ“… Radio Guide";
+        toggleGuideBtn.textContent = "Radio Guide";
         
         // Show Genre Button again
         if (sortGenreBtn) sortGenreBtn.style.display = 'inline-block';
@@ -806,7 +717,7 @@ toggleGuideBtn?.addEventListener('click', () => {
         guideView.style.display = 'block';
         stationGrid.style.display = 'none'; 
         toggleGuideBtn.classList.add('active');
-        toggleGuideBtn.textContent = "Close Guide âœ–";
+        toggleGuideBtn.textContent = "Close Guide \u2716";
         
         // Hide Genre Button (Not supported in Guide view)
         if (sortGenreBtn) sortGenreBtn.style.display = 'none';
@@ -903,7 +814,6 @@ function renderGuide() {
         sticky.className = 'guide-station-sticky';
         const imgPath = station.image || `radio-images/${station.imageFilename || station.name}.webp`;
         
-        // --- NEW: Added City Div ---
         sticky.innerHTML = `
             <img src="${imgPath}" class="guide-station-img">
             <div class="guide-station-name">${station.name}</div>
@@ -935,7 +845,7 @@ async function fetchScheduleForStation(station, rowContainer, guideStartUTC) {
                         desc: show.desc,
                         start: show.start,
                         duration: show.duration,
-                        url: show.url // <--- THIS WAS MISSING!
+                        url: show.url
                     }, station, rowContainer, guideStartUTC);
                 });
                 return; 
@@ -954,7 +864,6 @@ function renderShowItem(show, station, rowContainer, guideStartUTC) {
     const item = document.createElement('div');
     item.className = 'guide-item';
     
-    // Add a visual cue that this is a link (optional, but good for UX)
     item.title = "Click to view show info"; 
     
     // Calculate Position
@@ -974,25 +883,21 @@ function renderShowItem(show, station, rowContainer, guideStartUTC) {
 
     item.innerHTML = `
         <div class="guide-time-text">${stationTimeStr}</div>
-        <div class="guide-show-title">${show.title} <span style="font-size:10px">â†—</span></div>
+        <div class="guide-show-title">${show.title} <span style="font-size:10px">\u2197</span></div>
         <div class="guide-show-desc">${show.desc}</div>
     `;
     
-    // --- UPDATED CLICK BEHAVIOR ---
     item.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stop the click from bubbling up
+        e.stopPropagation();
         if (show.url) {
-            window.open(show.url, '_blank'); // Open Spinitron page
+            window.open(show.url, '_blank');
         } else {
-            // Fallback if no URL: just play the station? Or do nothing?
-            // Let's play the station as a fallback, or you can remove this line.
             playStation(station); 
         }
     });
     
     rowContainer.appendChild(item);
 }
-// Note: I renamed 'renderShowCard' to 'renderShowItem' in the helper to match
 
 // ===== Sort Button Handlers =====
 sortAlphaBtn?.addEventListener('click', () => sortStations('alpha'));
@@ -1005,7 +910,7 @@ function init() {
     createGenreFilter();
     createTimezoneFilter();
     
-    // --- Force image to hide on startup ---
+    // Force image to hide on startup
     if (currentImage) currentImage.style.display = 'none'; 
 
     stationsWithImages = radioStations.map(station => ({
@@ -1017,88 +922,6 @@ function init() {
     
     // Initial sort and render
     sortStations('geo'); 
-}
-
-// ===== HISTORY POPUP LOGIC =====
-const historyView = document.getElementById('history-view');
-const historyContent = document.getElementById('history-content');
-const toggleHistoryBtn = document.getElementById('toggle-history');
-const closeHistoryBtn = document.getElementById('close-history');
-
-// 1. Open History
-if (toggleHistoryBtn) {
-    toggleHistoryBtn.addEventListener('click', async () => {
-        // Toggle the view
-        const isHidden = historyView.style.display === 'none';
-        if (!isHidden) {
-            historyView.style.display = 'none';
-            toggleHistoryBtn.classList.remove('active');
-            return;
-        }
-        
-        // Show the view
-        historyView.style.display = 'block'; 
-        toggleHistoryBtn.classList.add('active');
-        
-        // Fetch Data
-        historyContent.innerHTML = '<div class="guide-message">Loading your diary...</div>';
-        
-        if (!supabaseClient) {
-            historyContent.innerHTML = '<div class="guide-message">History tracking not connected. Check Supabase credentials.</div>';
-            return;
-        }
-
-        const { data, error } = await supabaseClient
-            .from('history')
-            .select('*')
-            .order('created_at', { ascending: false })
-            .limit(50); // Get last 50 sessions
-
-        if (error) {
-            historyContent.innerHTML = `<div class="guide-message error-message">Error loading history: ${error.message}</div>`;
-            return;
-        }
-
-        if (!data || data.length === 0) {
-            historyContent.innerHTML = '<div class="guide-message">No listening history yet. Go listen to some tunes!</div>';
-            return;
-        }
-
-        // Render List
-        historyContent.innerHTML = ''; // Clear loading message
-        
-        data.forEach(session => {
-            const date = new Date(session.created_at);
-            const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
-            
-            // Format Duration (e.g., "12m 30s")
-            const mins = Math.floor(session.duration_seconds / 60);
-            const secs = session.duration_seconds % 60;
-            const durStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-
-            const row = document.createElement('div');
-            row.className = 'history-item';
-            row.innerHTML = `
-                <div style="flex-grow:1">
-                    <span class="h-station">${session.station_name}</span>
-                    <div class="h-meta">
-                        ${session.station_city} â€¢ ${dateStr} <br>
-                        <span style="opacity:0.6">Listened from: ${session.listener_city || 'Unknown'}</span>
-                    </div>
-                </div>
-                <div class="h-duration">${durStr}</div>
-            `;
-            historyContent.appendChild(row);
-        });
-    });
-}
-
-// 2. Close History Button
-if (closeHistoryBtn) {
-    closeHistoryBtn.addEventListener('click', () => {
-        historyView.style.display = 'none';
-        toggleHistoryBtn.classList.remove('active');
-    });
 }
 
 init();

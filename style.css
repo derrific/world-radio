@@ -597,39 +597,6 @@ h1 {
     }
 }
 
-/* HISTORY POPUP STYLES */
-.history-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: #222;
-    border-bottom: 1px solid #333;
-    position: sticky;
-    top: 0;
-}
-
-.history-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid #2a2a2a;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.history-item:hover {
-    background: #1a1a1a;
-}
-
-.h-station { font-weight: bold; color: #fff; display: block; }
-.h-meta { font-size: 0.8rem; color: #888; margin-top: 2px; }
-.h-duration { font-family: monospace; color: #4CAF50; font-size: 0.9rem; }
-
-/* Mobile tweak for history */
-@media (max-width: 768px) {
-    .h-meta { font-size: 0.7rem; }
-}
-
 /* =========================================
    GLOBAL TIME FORMATTING
    (Applies to both Desktop and Mobile)
